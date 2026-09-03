@@ -4,6 +4,8 @@
 
 Live factory tables (same KennPar names): [factory-fuel.md](factory-fuel.md), [factory-timing.md](factory-timing.md).
 
+**Decoded UDC stock vs this truck’s factory maps:** [smarty-s03-maps.md](smarty-s03-maps.md) (1998.5–99 `FLFL` / `4DTA` / `5DFL` cell tables). Browser view: [maps/smarty/s03_vs_factory.html](../maps/smarty/s03_vs_factory.html).
+
 Smarty S03 (MADS / TomElectronics) is a **handheld** VP44 tuner ecosystem with a PC application **UDC Pro RT**. It is a different product from Quadzilla Adrenaline. Do not mix ARM7 32 KB Adrenaline facts into S03 work.
 
 This master repo **does not** ship UDC Pro, year `.dat` stock databases, `.Smt` firmware, or recovered keys. Those are vendor IP. Private lab analysis scripts named `analyze_s03_*.py` are **not** copied here, and they are **not** in the public [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed) tree (that repo is Adrenaline-focused).
@@ -26,11 +28,9 @@ XOR-key guessing on the year `.dat` files is **frozen**. The lab harness (`analy
 | `4DTA00ZA` | timing table |
 | `4DTA00XA` | RPM axis |
 
-The KennPar dumps in this repository are **not** that flash image. They are ITN payloads without flash addresses. They do **not** unfreeze the KPA by themselves.
+The KennPar dumps in this repository are **not** that flash image. They are ITN payloads without flash addresses. They do **not** unfreeze XOR-key guessing.
 
-Status recorded in lab notes: year `.dat` plaintext still needs a CM551 KPA pair or work inside the packed UDC runtime. **Do not brute XOR keys. Do not unpack Themida.** This page will not describe those attacks.
-
-Until a legitimate plaintext image exists, treat UDC stock `.dat` as opaque vendor data.
+Year `.dat` **cell tables** on this page come from plaintext already produced by the recovered UDC native decoder (`LIB_0203` `PCGet`) in the private lab — **not** from a new KPA run. Vendor `.dat` / `.Smt` blobs stay out of this git tree. **Do not brute XOR keys. Do not unpack Themida.** This page will not describe those attacks.
 
 ## What is known without redistributing vendor files
 
@@ -42,13 +42,13 @@ None of that is needed to compare J90269.06 vs J90268.04. Use [factory-fuel.md](
 
 ## What remains unknown (stated as unknown)
 
-- A public, legal mapping from UDC slot / “HP” labels to the 5D fuel cells in `maps/tune_A_vs_B.html`.
-- Plaintext of the shipped year `.dat` database.
-- Whether UDC’s 1998 vs 2000 families correspond 1:1 to silk-screen `J90268.04` vs `J90269.06`. The live dumps show those two codes differ in 5D fuel (and in the truncated AFC limiter). UDC filenames encode year/transmission/family; that is not the same identifier as an ECM code.
+- **SW0–SW9 as KennPar grids.** Handheld CaTCHER slots are F7 streams, not `FLFL`/`4DTA`/`5DFL` tables. There is still no cell-level delta for advertised power levels vs factory A/B. See [smarty-s03-maps.md](smarty-s03-maps.md).
+- Whether UDC’s later-year families (2000+) correspond 1:1 to silk-screen `J90268.04` vs `J90269.06`. Filenames encode year/transmission/family, not an ECM code. 1998 UDC **manual** WOT `5DFL00` is close to factory **B**, not A.
 - Handheld U2 / AT89 firmware as a readable image in this project.
 
 ## Pointers
 
+- **Smarty S03 vs factory maps:** [smarty-s03-maps.md](smarty-s03-maps.md)
 - KennPar names and live tables: [factory-fuel.md](factory-fuel.md), [factory-timing.md](factory-timing.md), `maps/`.
 - Read-only puller: [cm551-i6pull](https://github.com/Bender1011001/cm551-i6pull).
 - Adrenaline (not Smarty): [quadzilla.md](quadzilla.md) and [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed).

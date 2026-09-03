@@ -16,7 +16,8 @@
 | [docs/maps.md](maps.md) | Table format, all 29 Z-maps |
 | [docs/protocol.md](protocol.md) | ReadByNTN `0x48`/`0x49`, INLINE quirks |
 | [docs/quadzilla.md](quadzilla.md) | Adrenaline RE summary + pointer |
-| [docs/smarty.md](smarty.md) | UDC/KennPar overlap, KPA frozen |
+| [docs/smarty.md](smarty.md) | UDC/KennPar overlap, KPA frozen, pointer to decoded S03 maps |
+| [docs/smarty-s03-maps.md](smarty-s03-maps.md) | 1998 UDC stock FLFL / 4DTA / 5DFL vs factory A/B; SW0–9 blocker |
 | [docs/safety.md](safety.md) | Read-only rules |
 | [maps/index.md](../maps/index.md) | Map-file index |
 | [maps/tune_A_vs_B.html](../maps/tune_A_vs_B.html) | Decoded compare (browser) |
@@ -25,6 +26,7 @@
 | [maps/DIFF.md](../maps/DIFF.md) | Blob-level A vs B notes |
 | [maps/A_identity.json](../maps/A_identity.json), [B_identity.json](../maps/B_identity.json) | Identity, no VIN/ESN |
 | [maps/A_dump.json](../maps/A_dump.json), [B_dump.json](../maps/B_dump.json) | Packed ITNs; `81AC` redacted |
+| [maps/smarty/](../maps/smarty/) | Decoded 1998 UDC grids (JSON) + `s03_vs_factory.html`; numbers only, no vendor blobs |
 
 ## Companion GitHub repos (do not duplicate here)
 
@@ -47,4 +49,4 @@ A private working tree holds INLINE experiments, Smarty analysis scripts, captur
 - Entire `captures/`, `official_s03/`, I6Pull `_scan_*` experiment scripts
 - Any write-to-ECM tool or exploit/PoC
 
-If you need the puller, clone i6pull. If you need only dumps, clone dodge-dumps or use `maps/` here. If you need Adrenaline firmware RE, use the Quadzilla repo. This repository is the **index, the factory fuel/timing tables, and the truck writeup**.
+If you need the puller, clone i6pull. If you need only dumps, clone dodge-dumps or use `maps/` here. If you need Adrenaline firmware RE, use the Quadzilla repo. This repository is the **index, the factory fuel/timing tables, the truck writeup, and decoded UDC stock vs factory tables**.

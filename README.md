@@ -11,6 +11,7 @@ This repository is the owner-captured **factory calibration** from two physical 
 | Fuel (5DFL A vs B, conversion, AFC) | **[docs/factory-fuel.md](docs/factory-fuel.md)** |
 | Timing (4DTA00 vs 4DTA01) | **[docs/factory-timing.md](docs/factory-timing.md)** |
 | Adrenaline overlay vs those KennPars | **[docs/quadzilla-vs-factory.md](docs/quadzilla-vs-factory.md)** |
+| Smarty S03 vs factory maps | **[docs/smarty-s03-maps.md](docs/smarty-s03-maps.md)** |
 | All 29 maps in a browser | **[maps/tune_A_vs_B.html](maps/tune_A_vs_B.html)** |
 
 Index of map files: [maps/index.md](maps/index.md). How tables are stored, and the other 24 maps: [docs/maps.md](docs/maps.md).
@@ -41,7 +42,7 @@ On the 100% (full throttle) row of `5DFL00ZA` / `5DFL01ZA`, **A is richer** than
 
 [Quadzilla Adrenaline](docs/quadzilla-vs-factory.md) is a **piggyback** on the ECM↔pump path. It does not contain these CM551 tables and does not rewrite them. Firmware reverse-engineering lives in a companion repo (below). This master repo only explains how Adrenaline *adjustments relate* to factory `5DFL` / `4DTA` / `FLFL` / AFC — and where that mapping is still unknown.
 
-[Smarty / UDC](docs/smarty.md) uses the same KennPar *names*. Stock UDC databases are not published here.
+[Smarty / UDC](docs/smarty.md) uses the same KennPar *names*. Decoded **1998 UDC stock** tables versus factory A/B: **[Smarty S03 vs factory maps](docs/smarty-s03-maps.md)**. Stock UDC `.dat` databases and handheld `.Smt` firmware are not published here. Handheld SW0–9 are **not** those year-stock files.
 
 ## Companion repositories
 
