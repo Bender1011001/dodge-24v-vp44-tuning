@@ -1,5 +1,7 @@
 # A vs B — calibration vs runtime
 
+> Decoded shop tables: [factory-fuel.md](../docs/factory-fuel.md), [factory-timing.md](../docs/factory-timing.md). Index: [index.md](index.md).
+
 Two CM551 KennPar dumps, same ECM P/N `03942336` / ROM `091197`. Packed ITN blobs compared after VIN redaction.
 
 | | A (J90269.06) | B (J90268.04) |
@@ -14,7 +16,7 @@ Two CM551 KennPar dumps, same ECM P/N `03942336` / ROM `091197`. Packed ITN blob
 
 - Identical ITN payloads: **536**
 - Differing ITN payloads: **130** after VIN redaction (**131** in the raw capture, including ITN `81AC`)
-- Decoded map tables that differ: **2** (5DFL00ZA, 5DFL01ZA)
+- Decoded map tables that differ: **3** — complete `5DFL00ZA` / `5DFL01ZA`, plus truncated `AFFLLMZA` (axes also differ; do not index-align)
 
 Raw blob diffs include runtime counters (hours, key-on, VSS miles) and trailing bytes past some KennPar tables. A differing ITN blob does not always mean the decoded map differs.
 

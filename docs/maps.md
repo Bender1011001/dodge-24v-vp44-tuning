@@ -1,10 +1,16 @@
 # Maps: how tables are stored, and A vs B
 
-Decoded artifacts (open the HTML in a browser):
+> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [HTML viewer](../maps/tune_A_vs_B.html) · [Safety](safety.md)
 
-- [maps/tune_A_vs_B.html](../maps/tune_A_vs_B.html) — grids; yellow cells differ
+**Open first (decoded numbers in markdown):** [factory-fuel.md](factory-fuel.md) (5DFL A vs B, FLFL, AFC) · [factory-timing.md](factory-timing.md) (4DTA00 / 4DTA01) · [maps/index.md](../maps/index.md).
+
+This page is storage rules, the A-vs-B story in short, and the catalog of all **29** Z-maps. The HTML remains the full viewer.
+
+Decoded artifacts:
+
+- [maps/tune_A_vs_B.html](../maps/tune_A_vs_B.html) — grids; amber cells differ
 - [maps/tune_A_vs_B.json](../maps/tune_A_vs_B.json) — same numbers
-- [maps/tune_preview.md](../maps/tune_preview.md) — 4D timing, 5D fuel, FLFLTBZA as markdown
+- [maps/tune_preview.md](../maps/tune_preview.md) — compact preview (factory pages above are the shop copy)
 - [maps/DIFF.md](../maps/DIFF.md) — short blob-level summary
 
 Decode source: Chr0000 meta over the packed ReadByNTN dumps. **29** Z-maps, **2172** scalars. Passwords and boot-copy ITNs are not in the dumps.
@@ -42,7 +48,7 @@ Same ECM P/N and ROM date. Timing conversion and timing grids match. **Fuel does
 
 `5DFL00ZA` / `5DFL01ZA` first raw-byte difference is at **byte 114**, inside the 4×18 table. That is a real cal delta.
 
-On the 100% (full throttle) row, A is generally **richer** than B in the mid/high RPM columns. Example from the preview (A / B where they split), transient `5DFL00ZA` Y=100:
+On the 100% (full throttle) row, A is generally **richer** than B in the mid/high RPM columns. Full A and B grids plus A−B: [factory-fuel.md](factory-fuel.md). Snapshot:
 
 - 1200 RPM: 88.315 / 85.53
 - 2000 RPM: 98.506 / 95.788
@@ -56,7 +62,9 @@ Altitude derate `ATFLLMZA` (4×18) **matches**. Boost-based AFC limiter `AFFLLMZ
 
 ## AFFLLMZA (AFC limiter) — differs, dump truncated
 
-`AFFLLMZA` (ITN `104F`) is the AFC look-up: fueling limit vs boost × RPM. Axes decoded to **14 × 21**. The Z ITN was only **512 of 588 bytes** (256 of 294 cells). I6Pull requested the catalog size (512). The overlapping 256 cells **all differ**; A is richer at low boost in the sampled rows (for example row Y=0 starts 119.97 vs 100).
+`AFFLLMZA` (ITN `104F`) is the AFC look-up: fueling limit vs boost × RPM. Axes decoded to **14 × 21**. The Z ITN was only **512 of 588 bytes** (256 of 294 cells). I6Pull requested the catalog size (512).
+
+**RPM and boost breakpoints are not the same on A and B** (A has 700 RPM and 25/30 inHg; B has 4500 RPM and 100/110 inHg instead). The HTML viewer is **index-aligned**, so column 2 of A is not the same RPM as column 2 of B. Same-breakpoint slices (A richer at low boost; B’s 0 inHg row falls to ~45 mm³/s from 1280 RPM) are in [factory-fuel.md](factory-fuel.md).
 
 Count this as a **third decoded-table difference**, but an **incomplete** one. Do not treat the 14×21 grid as fully known. Re-pulling a longer Z is a tool change; this repo does not include a write path and does not instruct one. The HTML “maps that differ” summary highlighted 5D fuel because those two tables are complete 4×18 dumps. The JSON `equal` flag is false for `AFFLLMZA` as well.
 

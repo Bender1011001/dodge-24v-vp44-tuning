@@ -1,10 +1,14 @@
 # Quadzilla Adrenaline on this truck
 
+> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [Safety](safety.md)
+
+Tuner-facing overlay vs factory `5DFL` / `4DTA` / AFC: **[quadzilla-vs-factory.md](quadzilla-vs-factory.md)**. This page is the RE fact list (verified vs unknown).
+
 Quadzilla **Adrenaline** (DADR9802 class) is an inline diesel tuner sold for **1998–2002 Dodge Ram 24-valve Cummins / VP44**. It sits in the ECM↔pump path and exposes tuner parameters (AIDs) over USB CDC and BLE (iQuad / x2com). It is a **separate computer** from the CM551. CM551 KennPar dumps in this master repo are not Adrenaline firmware, and Adrenaline AIDs are not KennPar ITNs.
 
 Detailed artifacts live in [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed). This page is a factual summary for the same truck family. It does **not** copy firmware images, the PC updater, the APK, or Ghidra projects.
 
-Local lab map (audited): `E:\code.projects\quadzilla_rev\CONTEXT.md`. Prefer that file over older narrative writeups.
+Prefer the audited notes in [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed) over older narrative writeups. Tuner overlay vs these factory maps: [quadzilla-vs-factory.md](quadzilla-vs-factory.md).
 
 ## What is verified (static / file)
 
@@ -57,7 +61,7 @@ These are open because there was no tuner on USB/BLE in that pass, not because t
 
 ## How this relates to the CM551 dumps
 
-Adrenaline can change **what the pump sees** relative to stock ECM tables. The CM551 5D fuel and 4D timing grids in [maps.md](maps.md) are the **ECM** calibration. AID 85 stretch is a **tuner** overlay. They are not the same parameter space. This master repo does not claim a numeric mapping from 5D MM3S cells to AID 85.
+Adrenaline can change **what the pump sees** relative to stock ECM tables. The CM551 5D fuel and 4D timing grids in [factory-fuel.md](factory-fuel.md) / [factory-timing.md](factory-timing.md) are the **ECM** calibration. AID 85 stretch is a **tuner** overlay. They are not the same parameter space. This master repo does not claim a numeric mapping from 5D MM3S cells to AID 85. Plain-language overlay notes: [quadzilla-vs-factory.md](quadzilla-vs-factory.md).
 
 Do not mix CM551 ReadByNTN facts into Adrenaline ARM7 notes, or the reverse.
 

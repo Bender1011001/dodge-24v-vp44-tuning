@@ -1,5 +1,7 @@
 # The truck, the ECM, and the wire
 
+> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [Safety](safety.md)
+
 ## What this vehicle is
 
 A Dodge Ram with the **24-valve 5.9 Cummins** (ISB family), Bosch **VP44** rotary injection pump, and a Cummins **CM551** engine control module. In Chrysler terms this is the late-1990s / early-2000s 24-valve Cummins, commonly dated **1998.5 through 2002**.

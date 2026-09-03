@@ -1,8 +1,12 @@
 # Smarty / UDC (VP44) — what is known here
 
+> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [Safety](safety.md)
+
+Live factory tables (same KennPar names): [factory-fuel.md](factory-fuel.md), [factory-timing.md](factory-timing.md).
+
 Smarty S03 (MADS / TomElectronics) is a **handheld** VP44 tuner ecosystem with a PC application **UDC Pro RT**. It is a different product from Quadzilla Adrenaline. Do not mix ARM7 32 KB Adrenaline facts into S03 work.
 
-This master repo **does not** ship UDC Pro, year `.dat` stock databases, `.Smt` firmware, or recovered keys. Those are vendor IP. The local lab (`E:\code.projects\quadzilla_rev`) has analysis scripts named `analyze_s03_*.py`. They are **not** copied here, and they are **not** in the public [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed) tree (that repo is Adrenaline-focused).
+This master repo **does not** ship UDC Pro, year `.dat` stock databases, `.Smt` firmware, or recovered keys. Those are vendor IP. Private lab analysis scripts named `analyze_s03_*.py` are **not** copied here, and they are **not** in the public [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed) tree (that repo is Adrenaline-focused).
 
 ## Why Smarty shows up on a CM551 truck
 
@@ -34,7 +38,7 @@ Until a legitimate plaintext image exists, treat UDC stock `.dat` as opaque vend
 - Handheld `.Smt` / SmartyUSB update path is also a separate problem from CM551 ReadByNTN. Lab notes say the USB loader ships header records plus flash chunks; recovering the handheld MCU image was **not** finished from that path alone.
 - `S03V126CDR12A.Smt` in the lab is Smarty S03, **not** the Quadzilla ARM7 image.
 
-None of that is needed to compare J90269.06 vs J90268.04. Use [maps.md](maps.md).
+None of that is needed to compare J90269.06 vs J90268.04. Use [factory-fuel.md](factory-fuel.md) and [factory-timing.md](factory-timing.md).
 
 ## What remains unknown (stated as unknown)
 
@@ -45,7 +49,7 @@ None of that is needed to compare J90269.06 vs J90268.04. Use [maps.md](maps.md)
 
 ## Pointers
 
-- KennPar names and live tables: this repo, `maps/` and [maps.md](maps.md).
+- KennPar names and live tables: [factory-fuel.md](factory-fuel.md), [factory-timing.md](factory-timing.md), `maps/`.
 - Read-only puller: [cm551-i6pull](https://github.com/Bender1011001/cm551-i6pull).
 - Adrenaline (not Smarty): [quadzilla.md](quadzilla.md) and [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed).
 - `analyze_s03_*.py`: local `quadzilla_rev` only. Not published here on purpose.

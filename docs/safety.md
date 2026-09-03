@@ -1,5 +1,7 @@
 # Safety
 
+> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [Safety](safety.md)
+
 This repository is **read-only documentation** plus **read-only KennPar captures** from two CM551 modules the owner already possessed. Nothing here is a programming file.
 
 ## Do

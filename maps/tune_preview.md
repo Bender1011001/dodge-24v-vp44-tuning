@@ -1,5 +1,7 @@
 # CM551 A vs B tune preview
 
+> Shop copy with A vs B 5DFL deltas and AFC notes: [docs/factory-fuel.md](../docs/factory-fuel.md), [docs/factory-timing.md](../docs/factory-timing.md). This file is the compact preview that the decoder emitted.
+
 - A: `J90269.06`  CAL `062800`  PN `03942336`
 - B: `J90268.04`  CAL `102198`  PN `03942336`
 - Maps: **29** (3 differ)
