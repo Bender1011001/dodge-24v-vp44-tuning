@@ -1,6 +1,6 @@
 # Maps
 
-> **Docs:** [Home](../README.md) · [Fuel](../docs/factory-fuel.md) · [Timing](../docs/factory-timing.md) · [Adrenaline vs ECM](../docs/quadzilla-vs-factory.md) · [All 29 maps](../docs/maps.md) · [Safety](../docs/safety.md)
+> **Docs:** [Home](../README.md) · [Fuel](../docs/factory-fuel.md) · [Timing](../docs/factory-timing.md) · [Adrenaline vs ECM](../docs/quadzilla-vs-factory.md) · [All 29 maps](../docs/maps.md) · [Factory A vs B (visual)](factory-a-vs-b.html) · [Safety](../docs/safety.md)
 
 ## Open first (markdown, shop tables)
 
@@ -8,6 +8,7 @@
 |---|---|
 | [docs/factory-fuel.md](../docs/factory-fuel.md) | `5DFL00ZA` / `5DFL01ZA` A and B, 100% deltas, `FLFLTBZA`, truncated `AFFLLMZA`, flat `ATFLLMZA` |
 | [docs/factory-timing.md](../docs/factory-timing.md) | `4DTA00ZA` / `4DTA01ZA` (A = B), transient retard vs steady-state advance |
+| [factory-a-vs-b.html](factory-a-vs-b.html) | **Factory A vs B (visual)** — shop deck with WOT / timing / FLFL / AFC charts. PDF: [factory-a-vs-b.pdf](factory-a-vs-b.pdf) |
 | [docs/quadzilla-vs-factory.md](../docs/quadzilla-vs-factory.md) | Adrenaline overlay vs those KennPars |
 | [docs/smarty-s03-maps.md](../docs/smarty-s03-maps.md) | 1998 UDC stock vs factory A/B (`FLFL` / `4DTA` / `5DFL`) |
 
@@ -21,6 +22,9 @@ The HTML is index-aligned. That is fine for `5DFL` and `4DTA`. For **`AFFLLMZA`*
 
 | File | Contents |
 |---|---|
+| [factory-a-vs-b.html](factory-a-vs-b.html) | Visual A vs B presentation (charts from the JSON) |
+| [factory-a-vs-b.pdf](factory-a-vs-b.pdf) | Printable copy of that deck |
+| [build_factory_a_vs_b.py](build_factory_a_vs_b.py) | Regenerates the HTML/PDF from `tune_A_vs_B.json` |
 | [tune_A_vs_B.html](tune_A_vs_B.html) | Decoded maps and scalars, A vs B |
 | [tune_A_vs_B.json](tune_A_vs_B.json) | Same decode as JSON |
 | [tune_preview.md](tune_preview.md) | Older compact preview (superseded for shop use by the factory pages) |

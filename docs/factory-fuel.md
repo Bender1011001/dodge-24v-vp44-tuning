@@ -1,6 +1,6 @@
 # Factory fuel — 5DFL, FLFLTBZA, AFC
 
-> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [HTML viewer](../maps/tune_A_vs_B.html) · [Safety](safety.md)
+> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [HTML viewer](../maps/tune_A_vs_B.html) · [Factory A vs B (visual)](../maps/factory-a-vs-b.html) · [Safety](safety.md)
 
 These are the factory **fueling** tables from the two live CM551 dumps. Open this page first if you care about how much fuel the ECM asks for. Timing is in [factory-timing.md](factory-timing.md). Overlay / piggyback: [quadzilla-vs-factory.md](quadzilla-vs-factory.md).
 

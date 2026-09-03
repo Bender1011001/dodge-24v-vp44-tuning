@@ -10,6 +10,7 @@ This repository is the owner-captured **factory calibration** from two physical 
 |---|---|
 | Fuel (5DFL A vs B, conversion, AFC) | **[docs/factory-fuel.md](docs/factory-fuel.md)** |
 | Timing (4DTA00 vs 4DTA01) | **[docs/factory-timing.md](docs/factory-timing.md)** |
+| Factory A vs B (visual) | **[maps/factory-a-vs-b.html](maps/factory-a-vs-b.html)** |
 | Adrenaline overlay vs those KennPars | **[docs/quadzilla-vs-factory.md](docs/quadzilla-vs-factory.md)** |
 | Smarty S03 vs factory maps | **[docs/smarty-s03-maps.md](docs/smarty-s03-maps.md)** |
 | All 29 maps in a browser | **[maps/tune_A_vs_B.html](maps/tune_A_vs_B.html)** |

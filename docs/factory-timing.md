@@ -1,6 +1,6 @@
 # Factory timing — 4DTA00ZA / 4DTA01ZA
 
-> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [HTML viewer](../maps/tune_A_vs_B.html) · [Safety](safety.md)
+> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [HTML viewer](../maps/tune_A_vs_B.html) · [Factory A vs B (visual)](../maps/factory-a-vs-b.html) · [Safety](safety.md)
 
 These two tables are the factory **injection-timing look-ups** on the live CM551 dumps. Both calibrations carry the **same decoded grids**. The useful contrast is **transient vs steady-state**, not A vs B.
 

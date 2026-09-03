@@ -1,13 +1,14 @@
 # Maps: how tables are stored, and A vs B
 
-> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [HTML viewer](../maps/tune_A_vs_B.html) · [Safety](safety.md)
+> **Docs:** [Home](../README.md) · [Fuel](factory-fuel.md) · [Timing](factory-timing.md) · [Adrenaline vs ECM](quadzilla-vs-factory.md) · [All 29 maps](maps.md) · [HTML viewer](../maps/tune_A_vs_B.html) · [Factory A vs B (visual)](../maps/factory-a-vs-b.html) · [Safety](safety.md)
 
-**Open first (decoded numbers in markdown):** [factory-fuel.md](factory-fuel.md) (5DFL A vs B, FLFL, AFC) · [factory-timing.md](factory-timing.md) (4DTA00 / 4DTA01) · [maps/index.md](../maps/index.md).
+**Open first (decoded numbers in markdown):** [factory-fuel.md](factory-fuel.md) (5DFL A vs B, FLFL, AFC) · [factory-timing.md](factory-timing.md) (4DTA00 / 4DTA01) · [Factory A vs B (visual)](../maps/factory-a-vs-b.html) · [maps/index.md](../maps/index.md).
 
 This page is storage rules, the A-vs-B story in short, and the catalog of all **29** Z-maps. The HTML remains the full viewer.
 
 Decoded artifacts:
 
+- [maps/factory-a-vs-b.html](../maps/factory-a-vs-b.html) — Factory A vs B (visual)
 - [maps/tune_A_vs_B.html](../maps/tune_A_vs_B.html) — grids; amber cells differ
 - [maps/tune_A_vs_B.json](../maps/tune_A_vs_B.json) — same numbers
 - [maps/tune_preview.md](../maps/tune_preview.md) — compact preview (factory pages above are the shop copy)

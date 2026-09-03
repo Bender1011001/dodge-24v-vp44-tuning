@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Factory CM551 A vs B — J90269.06 / J90268.04</title>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.3/plotly.min.js"></script>
+<style>
+:root {
+  --bg:#0c0e14; --fg:#e8eaed; --muted:#8b93a7; --card:#161a24;
+  --border:#2c3344; --accent:#8ec0ff; --a:#5eb0ef; --b:#e8a04a;
+  --diff-bg:#4a3210; --diff-fg:#ffd48a; --ok:#3ecf8e; --warn:#ff8a80;
+  --navh:56px;
+}
+* { box-sizing:border-box; }
+html, body { margin:0; background:var(--bg); color:var(--fg);
+  font:15px/1.45 "Segoe UI", system-ui, sans-serif; }
+html { scroll-snap-type: y proximity; }
+a { color:var(--accent); }
+.nav {
+  position:sticky; top:0; z-index:20; height:var(--navh);
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:0 18px; background:rgba(12,14,20,.94);
+  border-bottom:1px solid var(--border); backdrop-filter:blur(8px);
+}
+.nav strong { color:#fff; letter-spacing:.02em; }
+.nav a { color:var(--muted); text-decoration:none; font-size:13px; padding:4px 8px; border-radius:6px; }
+.nav a:hover, .nav a.on { color:#fff; background:#1e2433; }
+.nav .print { margin-left:auto; background:#1e2433; border:1px solid var(--border);
+  color:var(--fg); border-radius:6px; padding:5px 10px; cursor:pointer; font:inherit; }
+.slide {
+  min-height:calc(100vh - var(--navh)); scroll-snap-align:start;
+  padding:28px 32px 40px; max-width:1400px; margin:0 auto;
+}
+.slide h1, .slide h2 { color:#fff; font-weight:650; margin:0 0 10px; }
+.slide h1 { font-size:clamp(1.6rem, 3vw, 2.4rem); letter-spacing:-.02em; }
+.slide h2 { font-size:1.35rem; }
+.kicker { color:var(--accent); font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+.lead { color:var(--muted); max-width:72ch; margin:0 0 18px; }
+.hero-codes { display:flex; gap:16px; flex-wrap:wrap; margin:22px 0 18px; }
+.hero-codes div {
+  flex:1; min-width:240px; background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:18px 20px;
+}
+.hero-codes .who { font-size:12px; color:var(--muted); font-weight:700; letter-spacing:.08em; }
+.hero-codes .code { font-size:2rem; font-weight:700; color:#fff; letter-spacing:-.03em; }
+.hero-codes .a .code { color:var(--a); }
+.hero-codes .b .code { color:var(--b); }
+.pills { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 0; }
+.pill { border:1px solid var(--border); background:#121622; border-radius:999px;
+  padding:4px 10px; font-size:12px; color:var(--muted); }
+.pill em { color:var(--fg); font-style:normal; }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+.card h3 { margin:0 0 8px; font-size:13px; color:var(--accent); letter-spacing:.06em; text-transform:uppercase; }
+.kv { display:grid; grid-template-columns:140px 1fr; gap:4px 10px; font-size:14px; }
+.kv span { color:var(--muted); }
+.big { font-size:clamp(2.2rem, 5vw, 3.6rem); font-weight:700; letter-spacing:-.04em; color:var(--diff-fg); line-height:1; }
+.big small { display:block; font-size:13px; color:var(--muted); font-weight:500; letter-spacing:0; margin-top:8px; }
+.split { display:grid; grid-template-columns:1.3fr .9fr; gap:18px; align-items:start; }
+.split3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+.chart { width:100%; height:46vh; min-height:340px; }
+.chart.short { height:38vh; min-height:280px; }
+.chart.tall { height:52vh; min-height:400px; }
+.scroll { overflow-x:auto; border:1px solid var(--border); border-radius:8px; }
+table.grid { border-collapse:collapse; font-size:11px; min-width:100%; }
+table.grid th, table.grid td { border:1px solid #2c313c; padding:3px 5px; text-align:right; white-space:nowrap; }
+table.grid th { background:#1e2433; }
+table.grid th.y, table.grid th.corner { position:sticky; left:0; background:#1e2433; z-index:1; }
+td.same { color:#c5c9d1; }
+td.diff, tr.diff td { background:var(--diff-bg); color:var(--diff-fg); }
+tr.hi td { outline:1px solid #c9a227; }
+.bval { display:block; color:#ffcc80; font-size:10px; font-weight:500; }
+.tblcap { color:var(--muted); font-size:12px; margin:8px 0 6px; }
+.chip { display:inline-block; margin:3px 4px 0 0; padding:3px 8px; border-radius:6px;
+  border:1px solid var(--border); font-size:12px; background:#121622; }
+.chip.diff { border-color:#b8862b; color:var(--diff-fg); background:var(--diff-bg); }
+.chip.same { color:#a8b0c2; }
+.chip.nak { opacity:.55; }
+.chip small { color:var(--muted); }
+.call { display:flex; gap:14px; flex-wrap:wrap; margin:12px 0 16px; }
+.call .card { min-width:200px; }
+.note { border-left:3px solid var(--b); padding:8px 12px; color:var(--muted); background:#16120c; border-radius:0 8px 8px 0; }
+.warnbox { border:1px solid #5a3030; background:#1a1010; color:#ffb4ae; border-radius:8px; padding:10px 14px; margin:10px 0; }
+.okbox { border:1px solid #1f4d3a; background:#0f1c16; color:#9fe7c3; border-radius:8px; padding:10px 14px; margin:10px 0; }
+.two { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.mono { font-family:ui-monospace, Consolas, monospace; font-size:13px; }
+footer.slide { color:var(--muted); font-size:13px; }
+@media (max-width:980px) {
+  .split, .two, .split3 { grid-template-columns:1fr; }
+  .slide { padding:20px 16px 32px; }
+  .chart, .chart.short, .chart.tall { height:300px; min-height:260px; }
+  html { scroll-snap-type: none; }
+}
+@page { size: landscape; margin: 8mm; }
+@media print {
+  .nav, .print { display:none !important; }
+  html { scroll-snap-type:none; }
+  .slide { min-height:auto; page-break-after:always; padding:12px 16px; max-width:none; }
+  .chart, .chart.short, .chart.tall { height:320px; min-height:320px; break-inside:avoid; }
+  body { background:#0c0e14; }
+}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <strong>CM551 A vs B</strong>
+  <a href="#title">Title</a>
+  <a href="#identity">Identity</a>
+  <a href="#same">Same</a>
+  <a href="#fuel-wot">Fuel WOT</a>
+  <a href="#fuel-delta">Fuel Δ</a>
+  <a href="#fuel-grids">Grids</a>
+  <a href="#timing">Timing</a>
+  <a href="#flfl">FLFL</a>
+  <a href="#afc">AFC</a>
+  <a href="#tune">If you tune</a>
+  <a href="tune_A_vs_B.html">29-map viewer</a>
+  <button class="print" type="button" onclick="window.print()">Print / PDF</button>
+</nav>
+
+<section class="slide" id="title">
+  <p class="kicker">Live KennPar dumps · read-only</p>
+  <h1>Two factory Cummins CM551 / Dodge 24v VP44 calibrations</h1>
+  <p class="lead">Same ECM part number and ROM date. Different silk-screen codes, different cal dates, different WOT fuel. Timing tables match. This is a decoded compare of two boxes the owner already had — not a flash image and not a write recipe.</p>
+  <div class="hero-codes">
+    <div class="a"><div class="who">ECM A</div><div class="code">J90269.06</div>
+      <div class="mono">cal 062800 · 6BTA 5.9 Li</div></div>
+    <div class="b"><div class="who">ECM B</div><div class="code">J90268.04</div>
+      <div class="mono">cal 102198 · ISB 235</div></div>
+  </div>
+  <div class="pills">
+    <span class="pill">P/N <em>03942336</em></span>
+    <span class="pill">ROM <em>091197</em></span>
+    <span class="pill">ReadByNTN <em>0x48</em></span>
+    <span class="pill">ITNs <em>667 / 0</em></span>
+    <span class="pill">Z-maps decoded <em>29</em></span>
+    <span class="pill">Chr0000 KennPar (ReadByNTN)</span>
+  </div>
+  <p class="lead" style="margin-top:18px">CAN 250k 29-bit PGN EF00 cmd 0x48. Packed ITN dump, not ROM. VIN and engine serial are not published.</p>
+</section>
+
+<section class="slide" id="identity">
+  <p class="kicker">The two boxes</p>
+  <h2>Identity, hours, miles — no VIN / ESN</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>ECM A · J90269.06</h3>
+      <div class="kv">
+        <span>Plate</span><div>Cummins 6BTA 5.9, FP98455, Chrysler T-300</div>
+        <span>P/N / ROM</span><div>03942336 / 091197</div>
+        <span>Cal date</span><div>062800</div>
+        <span>Engine hours</span><div>13130:48:02</div>
+        <span>Key-on</span><div>~13724</div>
+        <span>ECM VSS miles</span><div>81</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>ECM B · J90268.04</h3>
+      <div class="kv">
+        <span>Plate</span><div>ISB 235, 98453, Chrysler automotive</div>
+        <span>P/N / ROM</span><div>03942336 / 091197</div>
+        <span>Cal date</span><div>102198</div>
+        <span>Engine hours</span><div>10196:32:59</div>
+        <span>Key-on</span><div>~10240</div>
+        <span>ECM VSS miles</span><div>287919</div>
+      </div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:16px">Hours, key-on, and VSS are <em style="color:var(--fg)">runtime</em> counters — they differ because the boxes lived different lives. A’s ~81 ECM VSS miles with 13k hours is consistent with a module that ran a long time without a speed input the ECM trusted, or that did not spend its whole life in the truck that holds it now. Those numbers are not the calibration delta.</p>
+  <p class="lead">Decode: <span class="mono">physical = raw × scale + add</span>. RPM × 0.125. Fuel Z on 5DFL × 0.0679348, add −800. Timing Z × 0.1171875, add −60. Axis prefix: first u16 BE is byte length of points. Z is Y rows × X columns. Catalog comments that say 17×4 / 17×9 are wrong on these boxes — live prefixes are 4×18 fuel and 11×18 timing.</p>
+</section>
+
+<section class="slide" id="same">
+  <p class="kicker">29 Z-maps</p>
+  <h2>What is the same — and the three that are not</h2>
+  <div class="split3">
+    <div class="card">
+      <h3>Differ · 3</h3>
+      <div><span class="chip diff" title="ITN 1059">5DFL00ZA <small>4×18</small></span><span class="chip diff" title="ITN 1056">5DFL01ZA <small>4×18</small></span><span class="chip diff" title="ITN 104F">AFFLLMZA <small>14×21</small></span></div>
+      <p class="tblcap">Complete fuel request (5DFL) plus truncated AFC. Timing grids match.</p>
+    </div>
+    <div class="card">
+      <h3>Decoded same · 12</h3>
+      <div><span class="chip same" title="ITN 1041">4DTA00ZA <small>11×18</small></span><span class="chip same" title="ITN 103E">4DTA01ZA <small>11×18</small></span><span class="chip same" title="ITN 10A3">ATFLLMZA <small>4×18</small></span><span class="chip same" title="ITN 8191">BSTATBZA <small>6×6</small></span><span class="chip same" title="ITN 803F">CBDCAT <small>2×2</small></span><span class="chip same" title="ITN 8042">CBDSCT <small>2×2</small></span><span class="chip same" title="ITN 11D2">CPCS02YA <small>3×13</small></span><span class="chip same" title="ITN 108A">CPDSZA <small>7×13</small></span><span class="chip same" title="ITN 81F0">FLCDICZA <small>5×9</small></span><span class="chip same" title="ITN 8014">FLFLTBZA <small>15×15</small></span><span class="chip same" title="ITN 8017">FLTATBZA <small>12×12</small></span><span class="chip same" title="ITN 81B2">IHPHTMZA <small>4×7</small></span></div>
+    </div>
+    <div class="card">
+      <h3>NAK / empty · 14</h3>
+      <div><span class="chip nak" title="ITN 8246">AABSPRZA <small>0×0</small></span><span class="chip nak" title="ITN 1038">CAICTAZA <small>0×13</small></span><span class="chip nak" title="ITN 825E">CKEXFLZA <small>0×0</small></span><span class="chip nak" title="ITN 8261">CKIIFLZA <small>0×0</small></span><span class="chip nak" title="ITN 13F6">HG00ZA <small>0×0</small></span><span class="chip nak" title="ITN 13F3">HG01ZA <small>0×0</small></span><span class="chip nak" title="ITN 81C9">IHHITDTB <small>0×12</small></span><span class="chip nak" title="ITN 81D3">IHLOTDTB <small>0×12</small></span><span class="chip nak" title="ITN 8259">IHPHTZ1A <small>0×0</small></span><span class="chip nak" title="ITN 825A">IHPRTMZA <small>12×12</small></span><span class="chip nak" title="ITN 1460">MTTQMPZA <small>0×0</small></span><span class="chip nak" title="ITN 82C2">TCSTESZA <small>0×0</small></span><span class="chip nak" title="ITN 1076">WSTATB <small>0×10</small></span><span class="chip nak" title="ITN 82D4">WSTAZA <small>0×0</small></span></div>
+      <p class="tblcap">Chr0000 listed them; this Dodge cal NAKed ReadByNTN.</p>
+    </div>
+  </div>
+  <div class="okbox">Timing <span class="mono">4DTA00ZA</span> / <span class="mono">4DTA01ZA</span> (11×18) are <strong>the same</strong> A vs B. Conversion <span class="mono">FLFLTBZA</span> (15×15) is <strong>the same</strong>. Altitude derate <span class="mono">ATFLLMZA</span> is the same (flat 400). The silk-screen codes are not “the same tune with a sticker change.”</div>
+  <p class="lead">Scalars: 2172 decoded, 103 differ — many are runtime (hours, key-on, VSS, faults). <span class="mono">4DTA00ZA</span> raw blob first differs at byte 480 of 512, past the 11×18 table. <span class="mono">5DFL*</span> first differs at byte 114, inside the table.</p>
+</section>
+
+<section class="slide" id="fuel-wot">
+  <p class="kicker">The actual difference · 5DFL 100% row</p>
+  <h2>WOT fuel vs RPM — A is richer mid/high</h2>
+  <div class="call">
+    <div class="card">
+      <div class="big">+22.691<small>mm³/s at 3000 RPM · 5DFL01 100% (steady) · A 109.987 vs B 87.296</small></div>
+    </div>
+    <div class="card">
+      <div class="big" style="color:var(--a)">+19.973<small>mm³/s at 3000 RPM · 5DFL00 100% (transient) · A 109.987 vs B 90.014</small></div>
+    </div>
+    <div class="card">
+      <p class="tblcap" style="margin-top:0">2800 RPM gaps</p>
+      <p>Transient +11.957 · steady +12.976 mm³/s. Part-load rows (0 / 25 / 50%) match. 3800 column is 0 on both (unused breakpoint).</p>
+    </div>
+  </div>
+  <div id="chart-wot" class="chart"></div>
+  <p class="tblcap">Verified from <span class="mono">tune_A_vs_B.json</span>. Earlier shop note of ~+20–23 mm³/s at 3000 RPM 100% is the pair above (19.973 transient / 22.691 steady), not a third table.</p>
+</section>
+
+<section class="slide" id="fuel-delta">
+  <p class="kicker">5DFL00ZA / 5DFL01ZA</p>
+  <h2>A − B heatmap and the 100% tables</h2>
+  <div class="two">
+    <div>
+      <div id="chart-delta" class="chart short"></div>
+      <div id="chart-bars" class="chart short"></div>
+    </div>
+    <div>
+      <p class='tblcap'>5DFL00ZA 100% row (MM3S)</p><div class='scroll'><table class='grid wot'><tr><th>RPM</th><th>A</th><th>B</th><th>A − B</th></tr><tr class="same"><td>600</td><td>100</td><td>100</td><td>0</td></tr><tr class="same"><td>800</td><td>68.275</td><td>68.275</td><td>0</td></tr><tr class="same"><td>1000</td><td>68.003</td><td>68.003</td><td>0</td></tr><tr class="diff"><td>1200</td><td>88.315</td><td>85.53</td><td>2.785</td></tr><tr class="same"><td>1280</td><td>97.487</td><td>97.487</td><td>0</td></tr><tr class="diff"><td>1400</td><td>95.517</td><td>94.973</td><td>0.544</td></tr><tr class="same"><td>1580</td><td>94.022</td><td>94.022</td><td>0</td></tr><tr class="diff"><td>1800</td><td>95.992</td><td>94.701</td><td>1.291</td></tr><tr class="diff"><td>2000</td><td>98.506</td><td>95.788</td><td>2.718</td></tr><tr class="diff"><td>2200</td><td>100</td><td>97.011</td><td>2.989</td></tr><tr class="diff"><td>2400</td><td>101.495</td><td>98.981</td><td>2.514</td></tr><tr class="diff"><td>2500</td><td>103.397</td><td>100.815</td><td>2.582</td></tr><tr class="diff"><td>2600</td><td>106.998</td><td>102.989</td><td>4.009</td></tr><tr class="diff"><td>2700</td><td>109.987</td><td>106.998</td><td>2.989</td></tr><tr class="diff hi"><td>2800</td><td>108.968</td><td>97.011</td><td>11.957</td></tr><tr class="diff hi"><td>3000</td><td>109.987</td><td>90.014</td><td>19.973</td></tr><tr class="same"><td>3250</td><td>87.025</td><td>87.025</td><td>0</td></tr><tr class="same"><td>3800</td><td>0</td><td>0</td><td>0</td></tr></table></div>
+      <p class='tblcap'>5DFL01ZA 100% row (MM3S)</p><div class='scroll'><table class='grid wot'><tr><th>RPM</th><th>A</th><th>B</th><th>A − B</th></tr><tr class="same"><td>600</td><td>100</td><td>100</td><td>0</td></tr><tr class="same"><td>800</td><td>67.527</td><td>67.527</td><td>0</td></tr><tr class="same"><td>1000</td><td>68.003</td><td>68.003</td><td>0</td></tr><tr class="diff"><td>1200</td><td>88.315</td><td>84.987</td><td>3.328</td></tr><tr class="diff"><td>1280</td><td>96.468</td><td>95.517</td><td>0.951</td></tr><tr class="diff"><td>1400</td><td>94.633</td><td>94.022</td><td>0.611</td></tr><tr class="diff"><td>1580</td><td>94.973</td><td>93.207</td><td>1.766</td></tr><tr class="diff"><td>1800</td><td>95.177</td><td>93.818</td><td>1.359</td></tr><tr class="diff"><td>2000</td><td>97.011</td><td>93.614</td><td>3.397</td></tr><tr class="diff"><td>2200</td><td>98.03</td><td>93.275</td><td>4.755</td></tr><tr class="diff"><td>2400</td><td>99.525</td><td>94.973</td><td>4.552</td></tr><tr class="diff"><td>2500</td><td>100.68</td><td>95.517</td><td>5.163</td></tr><tr class="diff"><td>2600</td><td>104.008</td><td>96.468</td><td>7.54</td></tr><tr class="diff"><td>2700</td><td>107.473</td><td>100.272</td><td>7.201</td></tr><tr class="diff hi"><td>2800</td><td>106.998</td><td>94.022</td><td>12.976</td></tr><tr class="diff hi"><td>3000</td><td>109.987</td><td>87.296</td><td>22.691</td></tr><tr class="same"><td>3250</td><td>87.025</td><td>87.025</td><td>0</td></tr><tr class="same"><td>3800</td><td>0</td><td>0</td><td>0</td></tr></table></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="fuel-grids">
+  <p class="kicker">Full 4 × 18 grids</p>
+  <h2>Low-load rows match; only the 100% row moves</h2>
+  <p class='tblcap'>5DFL00ZA transient · 4 × 18 · ITN 1059 · amber = A ≠ B</p><div class='scroll'><table class='grid'><tr><th class="corner">Y \ X</th><th>600</th><th>800</th><th>1000</th><th>1200</th><th>1280</th><th>1400</th><th>1580</th><th>1800</th><th>2000</th><th>2200</th><th>2400</th><th>2500</th><th>2600</th><th>2700</th><th>2800</th><th>3000</th><th>3250</th><th>3800</th></tr><tr><th class="y">0</th><td class="same">8.968</td><td class="same">4.008</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td></tr><tr><th class="y">25</th><td class="same">33.22</td><td class="same">28.261</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">23.234</td><td class="same">0</td></tr><tr><th class="y">50</th><td class="same">57.473</td><td class="same">52.514</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">47.487</td><td class="same">0</td></tr><tr><th class="y">100</th><td class="same">100</td><td class="same">68.275</td><td class="same">68.003</td><td class="diff">88.315<span class="bval">B 85.53</span></td><td class="same">97.487</td><td class="diff">95.517<span class="bval">B 94.973</span></td><td class="same">94.022</td><td class="diff">95.992<span class="bval">B 94.701</span></td><td class="diff">98.506<span class="bval">B 95.788</span></td><td class="diff">100<span class="bval">B 97.011</span></td><td class="diff">101.495<span class="bval">B 98.981</span></td><td class="diff">103.397<span class="bval">B 100.815</span></td><td class="diff">106.998<span class="bval">B 102.989</span></td><td class="diff">109.987<span class="bval">B 106.998</span></td><td class="diff">108.968<span class="bval">B 97.011</span></td><td class="diff">109.987<span class="bval">B 90.014</span></td><td class="same">87.025</td><td class="same">0</td></tr></table></div>
+  <p class='tblcap'>5DFL01ZA steady-state · 4 × 18 · ITN 1056 · amber = A ≠ B</p><div class='scroll'><table class='grid'><tr><th class="corner">Y \ X</th><th>600</th><th>800</th><th>1000</th><th>1200</th><th>1280</th><th>1400</th><th>1580</th><th>1800</th><th>2000</th><th>2200</th><th>2400</th><th>2500</th><th>2600</th><th>2700</th><th>2800</th><th>3000</th><th>3250</th><th>3800</th></tr><tr><th class="y">0</th><td class="same">8.968</td><td class="same">4.008</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td><td class="same">0</td></tr><tr><th class="y">25</th><td class="same">33.017</td><td class="same">27.989</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">23.03</td><td class="same">0</td></tr><tr><th class="y">50</th><td class="same">56.998</td><td class="same">51.97</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">47.011</td><td class="same">0</td></tr><tr><th class="y">100</th><td class="same">100</td><td class="same">67.527</td><td class="same">68.003</td><td class="diff">88.315<span class="bval">B 84.987</span></td><td class="diff">96.468<span class="bval">B 95.517</span></td><td class="diff">94.633<span class="bval">B 94.022</span></td><td class="diff">94.973<span class="bval">B 93.207</span></td><td class="diff">95.177<span class="bval">B 93.818</span></td><td class="diff">97.011<span class="bval">B 93.614</span></td><td class="diff">98.03<span class="bval">B 93.275</span></td><td class="diff">99.525<span class="bval">B 94.973</span></td><td class="diff">100.68<span class="bval">B 95.517</span></td><td class="diff">104.008<span class="bval">B 96.468</span></td><td class="diff">107.473<span class="bval">B 100.272</span></td><td class="diff">106.998<span class="bval">B 94.022</span></td><td class="diff">109.987<span class="bval">B 87.296</span></td><td class="same">87.025</td><td class="same">0</td></tr></table></div>
+</section>
+
+<section class="slide" id="timing">
+  <p class="kicker">4DTA00ZA / 4DTA01ZA · A = B</p>
+  <h2>Timing vs RPM — peak-load vs light, and the transient hole</h2>
+  <p class="lead">Decoded 11×18 grids match A vs B. The contrast that matters is <strong>transient (00) vs steady (01)</strong>, not box vs box. Y is commanded fuel (mm³/s), not throttle percent. Peak Y is not shared: transient top 98.03 vs steady top 93.478.</p>
+  <div class="two">
+    <div id="chart-timing" class="chart tall"></div>
+    <div>
+      <div id="chart-hole" class="chart short"></div>
+      <div class="warnbox">Deepest transient retard: <strong>-6.328°</strong> at 2700 RPM, Y=61.481 mm³/s on 4DTA00. From 1280 through ~2800 RPM the transient table goes negative at mid/high fuel (~−2 to −6.3°). Steady-state stays positive in that band (~+4 to +8°). At 3000+ both come back positive. 3800 repeats 3250 on most rows.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="flfl">
+  <p class="kicker">FLFLTBZA · A = B · 15 × 15 · ITN 8014</p>
+  <h2>Fuel units → mg/stroke — conversion, not the request</h2>
+  <p class="lead">This is the density-style conversion table. Changing it without changing 5DFL is a different edit than raising the 100% fuel row. Below ~160 mm³/s the table still varies with RPM (dip 1200–2700, bump at 3000). From Y ≈ 160 up, rows are flat across RPM.</p>
+  <div class="two">
+    <div id="chart-flfl" class="chart tall"></div>
+    <div id="chart-flfl-peak" class="chart tall"></div>
+  </div>
+</section>
+
+<section class="slide" id="afc">
+  <p class="kicker">AFFLLMZA · truncated · axes differ</p>
+  <h2>AFC limiter — compare by breakpoint, not column index</h2>
+  <div class="warnbox"><strong>truncated Z dump 512/588 bytes (256/294 cells)</strong> — 256 of 294 cells present. Last complete row is Y index 11; Y index 12 has four cells; Y index 13 is empty. Do not treat the declared 14×21 as fully known. The 29-map HTML viewer is index-aligned and will mislead on this map.</div>
+  <div class="two" style="margin-top:12px">
+    <div class="card">
+      <h3>RPM X AFFLLMXA</h3>
+      <p class="mono">A: 600, 700, 800, 1000, 1200, 1280, 1400, 1580, 1800, 2000, 2200, 2400, 2500, 2600, 2700, 2800, 3000, 3250, 3800, 4000, 4200</p>
+      <p class="mono">B: 600, 800, 1000, 1200, 1280, 1400, 1580, 1800, 2000, 2200, 2400, 2500, 2600, 2700, 2800, 3000, 3250, 3800, 4000, 4200, 4500</p>
+      <p class="tblcap">A only: 700 · B only: 4500</p>
+    </div>
+    <div class="card">
+      <h3>Boost Y AFFLLMYA (inHg)</h3>
+      <p class="mono">A: 0, 1.002, 2.004, 3.006, 4.995, 10.005, 15, 19.994, 25.005, 29.999, 34.994, 40.004, 43.997, 48.005</p>
+      <p class="mono">B: 0, 1.002, 2.004, 3.006, 4.995, 10.005, 15, 19.994, 34.994, 40.004, 43.997, 48.005, 100.003, 110.008</p>
+      <p class="tblcap">A only: 25.005, 29.999 · B only: 100.003, 110.008 (100/110 inHg is above stock Dodge boost — leftover tail).</p>
+    </div>
+  </div>
+  <div id="chart-afc" class="chart"></div>
+  <div class="two">
+    <div><p class='tblcap'>AFFLLMZA at 0 inHg (zero boost), shared RPM only</p><div class='scroll'><table class='grid wot'><tr><th>RPM</th><th>A</th><th>B</th><th>A − B</th></tr><tr class="diff"><td>600</td><td>119.973</td><td>100</td><td>19.973</td></tr><tr class="diff"><td>800</td><td>130.027</td><td>66.372</td><td>63.655</td></tr><tr class="diff"><td>1000</td><td>73.573</td><td>63.451</td><td>10.122</td></tr><tr class="diff"><td>1200</td><td>73.573</td><td>63.519</td><td>10.054</td></tr><tr class="diff"><td>1280</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>1400</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>1580</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>1800</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>2000</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>2200</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>2400</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>2500</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>2600</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>2700</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>2800</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>3000</td><td>73.573</td><td>44.973</td><td>28.6</td></tr><tr class="diff"><td>3250</td><td>72.147</td><td>44.973</td><td>27.174</td></tr><tr class="diff"><td>3800</td><td>72.147</td><td>44.973</td><td>27.174</td></tr><tr class="diff"><td>4000</td><td>72.147</td><td>44.973</td><td>27.174</td></tr><tr class="diff"><td>4200</td><td>72.147</td><td>44.973</td><td>27.174</td></tr></table></div></div>
+    <div><p class='tblcap'>AFFLLMZA at 19.994 inHg (~10 psi), shared RPM only</p><div class='scroll'><table class='grid wot'><tr><th>RPM</th><th>A</th><th>B</th><th>A − B</th></tr><tr class="diff"><td>600</td><td>119.973</td><td>100</td><td>19.973</td></tr><tr class="diff"><td>800</td><td>140.897</td><td>100.747</td><td>40.15</td></tr><tr class="diff"><td>1000</td><td>164.334</td><td>97.215</td><td>67.119</td></tr><tr class="diff"><td>1200</td><td>164.334</td><td>99.321</td><td>65.013</td></tr><tr class="diff"><td>1280</td><td>164.334</td><td>108.56</td><td>55.774</td></tr><tr class="diff"><td>1400</td><td>164.334</td><td>106.318</td><td>58.016</td></tr><tr class="diff"><td>1580</td><td>164.334</td><td>97.011</td><td>67.323</td></tr><tr class="diff"><td>1800</td><td>164.334</td><td>88.383</td><td>75.951</td></tr><tr class="diff"><td>2000</td><td>164.334</td><td>86.277</td><td>78.057</td></tr><tr class="diff"><td>2200</td><td>164.334</td><td>87.228</td><td>77.106</td></tr><tr class="diff"><td>2400</td><td>164.334</td><td>88.791</td><td>75.543</td></tr><tr class="diff"><td>2500</td><td>164.334</td><td>88.859</td><td>75.475</td></tr><tr class="diff"><td>2600</td><td>164.334</td><td>86.141</td><td>78.193</td></tr><tr class="diff"><td>2700</td><td>164.334</td><td>86.141</td><td>78.193</td></tr><tr class="diff"><td>2800</td><td>164.334</td><td>78.465</td><td>85.869</td></tr><tr class="diff"><td>3000</td><td>164.334</td><td>75.543</td><td>88.791</td></tr><tr class="diff"><td>3250</td><td>170.109</td><td>72.962</td><td>97.147</td></tr><tr class="diff"><td>3800</td><td>170.109</td><td>75</td><td>95.109</td></tr><tr class="diff"><td>4000</td><td>170.109</td><td>75</td><td>95.109</td></tr><tr class="diff"><td>4200</td><td>170.109</td><td>75</td><td>95.109</td></tr></table></div></div>
+  </div>
+  <p class="note">At zero boost, B falls to a 44.973 mm³/s ceiling from 1280 RPM up; A holds 73.573 (then 72.147 at 3250+). At ~20 inHg A sits near 164 mm³/s across most RPM — above any 5DFL 100% cell — while B is lower and RPM-shaped. On the sampled complete rows, A’s AFC ceiling is well above 5DFL; B’s AFC is much tighter at low boost. This is a third decoded-table difference, incomplete.</p>
+</section>
+
+<section class="slide" id="tune">
+  <p class="kicker">Shop takeaway</p>
+  <h2>What this means if you tune</h2>
+  <div class="split">
+    <div>
+      <div class="okbox"><strong>A is the richer WOT fuel cal.</strong> Timing is identical on these two boxes, so <em>fueling</em> is the lever between them — not a hidden timing advance on J90269.06.</div>
+      <ul>
+        <li>Part-throttle 5DFL (0 / 25 / 50) matches. Cruise / light load is not the delta.</li>
+        <li>The 100% row is the complete, trustworthy cal delta: A holds ~107–110 mm³/s at 2800–3000; B drops into the high-80s / 90s.</li>
+        <li>Steady-state 5DFL01 is slightly leaner than transient 5DFL00 on both boxes, and the A-vs-B gap is <em>larger</em> there (+22.691 vs +19.973 at 3000).</li>
+        <li><span class="mono">FLFLTBZA</span> matches — you are not looking at a conversion-table difference.</li>
+        <li>AFC also differs (A richer limiter at shared low-boost breakpoints) but the dump is truncated. Do not index-align it.</li>
+        <li>A piggyback that already adds fuel stacked on A’s richer 5DFL is more fuel than either change alone. This page does not tell you how to program an ECM.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>This is not</h3>
+      <p>Not a flash / ROM image. Not a download-to-ECM file. Not a pump-frame recipe. Not overlay AID curves. Decoded values are engineering units after scale/add from a live upload.</p>
+      <p class="tblcap">Full grids: <a href="tune_A_vs_B.html">tune_A_vs_B.html</a> · <a href="../docs/factory-fuel.md">factory-fuel.md</a> · <a href="../docs/factory-timing.md">factory-timing.md</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="notes">
+  <p class="kicker">Sources</p>
+  <h2>Where the numbers came from</h2>
+  <p class="lead">Chart data is generated from <span class="mono">maps/tune_A_vs_B.json</span> (re-run <span class="mono">maps/build_factory_a_vs_b.py</span>). Identity from <span class="mono">A_identity.json</span> / <span class="mono">B_identity.json</span>. Cells are not invented.</p>
+  <p class="note">Smarty handheld SW capture on a spare is <strong>future work</strong> (owner will flash level 6 then level 4 on that box). It is not in this dump and not the point of this deck.</p>
+  <p class="tblcap">Read-only documentation. Open as a file in a browser; charts load Plotly from a CDN (tables still work offline).</p>
+</section>
+
+<script>
+const DATA = {"identity":{"a":{"ecm":"CM551","label":"A","ecm_code":"J90269.06","ecm_pn":"03942336","rom_date":"091197","cal_date":"062800","datadate":"062800","dataplate":{"engine":"Cummins 6BTA 5.9","raw":"JCMMNS6BTA5.9 Li","fuel_pump":"FP98455","application":"Chrysler T-300"},"engine_hours":"13130:48:02","key_on":"~13724","ecm_vss_miles":81,"ssph":"05 07 10 11 05 00 02 00","ssblph":"02 01 02 08","flcrc":"00 00","hardware_id_itn0000":"45 31","itns_ok":667,"itns_miss":0,"catalog":"Chr0000 KennPar (ReadByNTN)","protocol":"CAN 250k 29-bit PGN EF00 cmd 0x48","source":"read-only capture from hardware we own","note":"Packed ITN dump, not a flash/ROM image. VIN redacted. Password and boot-copy ITNs omitted."},"b":{"ecm":"CM551","label":"B","ecm_code":"J90268.04","ecm_pn":"03942336","rom_date":"091197","cal_date":"102198","datadate":"102198","dataplate":{"engine":"ISB 235","raw":"JCMMNSISB 235","fuel_pump":"98453","application":"Chrysler automotive"},"engine_hours":"10196:32:59","key_on":"~10240","ecm_vss_miles":287919,"ssph":"05 07 10 08 05 00 02 00","ssblph":"02 01 02 08","flcrc":"00 00","hardware_id_itn0000":"45 31","itns_ok":667,"itns_miss":0,"catalog":"Chr0000 KennPar (ReadByNTN)","protocol":"CAN 250k 29-bit PGN EF00 cmd 0x48","source":"read-only capture from hardware we own","note":"Packed ITN dump, not a flash/ROM image. VIN redacted. Password and boot-copy ITNs omitted."},"map_count":29,"scalar_count":2172,"scalar_diff":103,"itns_ok":667,"itns_miss":0,"protocol":"CAN 250k 29-bit PGN EF00 cmd 0x48","catalog":"Chr0000 KennPar (ReadByNTN)"},"catalog":{"same":[{"name":"4DTA00ZA","itn":"1041","units":"DEG","dims":[11,18],"equal":true,"note":""},{"name":"4DTA01ZA","itn":"103E","units":"DEG","dims":[11,18],"equal":true,"note":""},{"name":"ATFLLMZA","itn":"10A3","units":"MM3S","dims":[4,18],"equal":true,"note":""},{"name":"BSTATBZA","itn":"8191","units":"DEG","dims":[6,6],"equal":true,"note":""},{"name":"CBDCAT","itn":"803F","units":"NONE","dims":[2,2],"equal":true,"note":""},{"name":"CBDSCT","itn":"8042","units":"NONE","dims":[2,2],"equal":true,"note":""},{"name":"CPCS02YA","itn":"11D2","units":"NONE","dims":[3,13],"equal":true,"note":""},{"name":"CPDSZA","itn":"108A","units":"PSIA","dims":[7,13],"equal":true,"note":""},{"name":"FLCDICZA","itn":"81F0","units":"MM3S","dims":[5,9],"equal":true,"note":""},{"name":"FLFLTBZA","itn":"8014","units":"MG/S","dims":[15,15],"equal":true,"note":""},{"name":"FLTATBZA","itn":"8017","units":"DEG","dims":[12,12],"equal":true,"note":""},{"name":"IHPHTMZA","itn":"81B2","units":"SEC","dims":[4,7],"equal":true,"note":""}],"differ":[{"name":"5DFL00ZA","itn":"1059","units":"MM3S","dims":[4,18],"equal":false,"note":""},{"name":"5DFL01ZA","itn":"1056","units":"MM3S","dims":[4,18],"equal":false,"note":""},{"name":"AFFLLMZA","itn":"104F","units":"MM3S","dims":[14,21],"equal":false,"note":"truncated Z dump 512/588 bytes (256/294 cells)"}],"nak":[{"name":"AABSPRZA","itn":"8246","units":"INHG","dims":[0,0],"equal":true,"note":"X: NAK 0D 08 48; Y: NAK 0D 08 48; NAK 0D 08 48"},{"name":"CAICTAZA","itn":"1038","units":"DEG","dims":[0,13],"equal":true,"note":"Y: NAK 0D 08 48; empty axes"},{"name":"CKEXFLZA","itn":"825E","units":"MM3S","dims":[0,0],"equal":true,"note":"X: NAK 0D 08 48; Y: NAK 0D 08 48; NAK 0D 08 48"},{"name":"CKIIFLZA","itn":"8261","units":"MM3S","dims":[0,0],"equal":true,"note":"X: NAK 0D 08 48; Y: NAK 0D 08 48; NAK 0D 08 48"},{"name":"HG00ZA","itn":"13F6","units":"MM3S","dims":[0,0],"equal":true,"note":"X: NAK 0D 08 48; Y: NAK 0D 08 48; NAK 0D 08 48"},{"name":"HG01ZA","itn":"13F3","units":"MM3S","dims":[0,0],"equal":true,"note":"X: NAK 0D 08 48; Y: NAK 0D 08 48; NAK 0D 08 48"},{"name":"IHHITDTB","itn":"81C9","units":"FDEG","dims":[0,12],"equal":true,"note":"Y: NAK 0D 08 48; empty axes"},{"name":"IHLOTDTB","itn":"81D3","units":"FDEG","dims":[0,12],"equal":true,"note":"Y: NAK 0D 08 48; empty axes"},{"name":"IHPHTZ1A","itn":"8259","units":"SEC","dims":[0,0],"equal":true,"note":"X: NAK 0D 08 48; Y: NAK 0D 08 48; NAK 0D 08 48"},{"name":"IHPRTMZA","itn":"825A","units":"SEC","dims":[12,12],"equal":true,"note":"NAK 0D 08 48"},{"name":"MTTQMPZA","itn":"1460","units":"FTLB","dims":[0,0],"equal":true,"note":"X: NAK 0D 08 48; Y: NAK 0D 08 48; NAK 0D 08 48"},{"name":"TCSTESZA","itn":"82C2","units":"RPM","dims":[0,0],"equal":true,"note":"X: NAK 0D 08 48; Y: NAK 0D 08 48; NAK 0D 08 48"},{"name":"WSTATB","itn":"1076","units":"DEG","dims":[0,10],"equal":true,"note":"Y: NAK 0D 08 48; empty axes"},{"name":"WSTAZA","itn":"82D4","units":"DEG","dims":[0,0],"equal":true,"note":"X: NAK 0D 08 48; Y: NAK 0D 08 48; NAK 0D 08 48"}]},"scales":{"rpm":0.125,"fuel":0.0679348,"fuel_5dfl_add":-800,"timing":0.1171875,"timing_add":-60,"axis_prefix":"first u16 BE = byte length of points; Z = Y rows \u00d7 X cols"},"fuel":{"x":[600.0,800.0,1000.0,1200.0,1280.0,1400.0,1580.0,1800.0,2000.0,2200.0,2400.0,2500.0,2600.0,2700.0,2800.0,3000.0,3250.0,3800.0],"y":[0.0,25.0,50.0,100.0],"a00":[[8.968,4.008,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[33.22,28.261,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,0.0],[57.473,52.514,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,0.0],[100.0,68.275,68.003,88.315,97.487,95.517,94.022,95.992,98.506,100.0,101.495,103.397,106.998,109.987,108.968,109.987,87.025,0.0]],"b00":[[8.968,4.008,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[33.22,28.261,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,23.234,0.0],[57.473,52.514,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,47.487,0.0],[100.0,68.275,68.003,85.53,97.487,94.973,94.022,94.701,95.788,97.011,98.981,100.815,102.989,106.998,97.011,90.014,87.025,0.0]],"a01":[[8.968,4.008,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[33.017,27.989,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,0.0],[56.998,51.97,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,0.0],[100.0,67.527,68.003,88.315,96.468,94.633,94.973,95.177,97.011,98.03,99.525,100.68,104.008,107.473,106.998,109.987,87.025,0.0]],"b01":[[8.968,4.008,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[33.017,27.989,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,23.03,0.0],[56.998,51.97,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,47.011,0.0],[100.0,67.527,68.003,84.987,95.517,94.022,93.207,93.818,93.614,93.275,94.973,95.517,96.468,100.272,94.022,87.296,87.025,0.0]],"delta00":[[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,2.785,0.0,0.544,0.0,1.291,2.718,2.989,2.514,2.582,4.009,2.989,11.957,19.973,0.0,0.0]],"delta01":[[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,3.328,0.951,0.611,1.766,1.359,3.397,4.755,4.552,5.163,7.54,7.201,12.976,22.691,0.0,0.0]],"wot00_a":[100.0,68.275,68.003,88.315,97.487,95.517,94.022,95.992,98.506,100.0,101.495,103.397,106.998,109.987,108.968,109.987,87.025,0.0],"wot00_b":[100.0,68.275,68.003,85.53,97.487,94.973,94.022,94.701,95.788,97.011,98.981,100.815,102.989,106.998,97.011,90.014,87.025,0.0],"wot01_a":[100.0,67.527,68.003,88.315,96.468,94.633,94.973,95.177,97.011,98.03,99.525,100.68,104.008,107.473,106.998,109.987,87.025,0.0],"wot01_b":[100.0,67.527,68.003,84.987,95.517,94.022,93.207,93.818,93.614,93.275,94.973,95.517,96.468,100.272,94.022,87.296,87.025,0.0],"wot00_delta":[0.0,0.0,0.0,2.785,0.0,0.544,0.0,1.291,2.718,2.989,2.514,2.582,4.009,2.989,11.957,19.973,0.0,0.0],"wot01_delta":[0.0,0.0,0.0,3.328,0.951,0.611,1.766,1.359,3.397,4.755,4.552,5.163,7.54,7.201,12.976,22.691,0.0,0.0],"gap":{"dfl00_3000":{"rpm":3000,"a":109.987,"b":90.014,"delta":19.973},"dfl01_3000":{"rpm":3000,"a":109.987,"b":87.296,"delta":22.691},"dfl00_2800":{"rpm":2800,"a":108.968,"b":97.011,"delta":11.957},"dfl01_2800":{"rpm":2800,"a":106.998,"b":94.022,"delta":12.976}},"equal00":false,"equal01":false},"timing":{"x":[700.0,800.0,1000.0,1200.0,1280.0,1400.0,1580.0,1800.0,2000.0,2200.0,2400.0,2500.0,2600.0,2700.0,2800.0,3000.0,3250.0,3800.0],"y00":[0.0,24.592,30.774,43.071,50.0,61.481,65.014,73.777,80.027,90.014,98.03],"y01":[0.0,24.592,30.774,43.071,50.0,61.481,65.014,73.777,80.027,84.986,93.478],"z00":[[1.172,1.172,1.172,0.234,0.352,0.234,1.172,1.172,1.172,2.695,3.633,4.219,4.219,4.219,4.688,5.156,5.156,5.156],[1.992,1.172,-0.703,-0.352,-1.172,-1.055,-0.469,0.117,0.352,2.695,3.633,4.219,4.219,4.219,4.805,5.156,5.156,5.156],[2.227,2.227,1.523,-0.352,-0.469,-1.406,-1.523,-1.875,-1.289,-1.289,-1.172,-1.289,-1.289,-1.289,-0.703,5.156,5.156,5.156],[2.812,3.164,4.336,0.117,0.117,-0.234,-1.406,-2.227,-1.289,-1.289,-1.289,-1.875,-2.344,-3.281,-2.93,2.109,3.984,3.984],[2.812,5.156,9.141,9.141,1.172,-0.703,-1.758,-2.227,-2.344,-2.344,-2.344,-3.047,-4.453,-5.273,-5.039,-0.469,3.984,3.984],[5.859,8.672,9.492,9.844,-0.352,-1.172,-2.344,-2.578,-2.578,-3.164,-4.102,-5.391,-6.211,-6.328,-6.328,-0.938,5.156,5.156],[8.789,8.672,9.727,9.844,-0.234,-0.82,-2.461,-2.812,-2.93,-4.102,-4.922,-5.859,-6.328,-6.328,-6.328,-0.469,5.742,5.742],[8.555,9.141,10.078,10.195,-0.117,-1.172,-2.93,-3.281,-3.398,-4.922,-6.328,-6.328,-6.328,-5.977,-5.273,1.758,6.562,6.562],[9.141,10.078,10.078,10.195,-0.234,-1.289,-1.641,-1.875,-3.633,-5.156,-5.391,-5.625,-5.273,-4.805,-3.984,2.812,7.148,7.148],[9.727,10.078,10.078,9.844,0.0,0.0,-0.234,-0.352,-0.586,-0.234,0.0,0.0,0.117,3.164,3.633,6.328,7.852,7.852],[10.078,10.078,10.078,10.078,0.117,2.109,2.461,2.227,3.164,3.75,3.633,3.516,3.867,4.219,5.039,5.859,7.852,7.852]],"z01":[[5.977,5.977,5.977,1.992,1.992,1.992,1.992,5.039,4.805,4.57,4.57,4.805,5.039,5.156,5.156,5.156,5.156,5.156],[5.977,5.977,5.977,1.992,1.992,1.992,1.992,5.039,4.805,4.57,4.57,4.805,5.039,5.156,5.156,5.156,5.156,5.156],[2.227,2.461,9.961,9.961,7.969,5.039,5.039,5.039,4.57,4.453,4.805,4.922,5.039,5.156,5.156,5.156,5.156,5.156],[2.812,3.516,9.961,9.961,7.969,4.57,4.453,3.984,3.75,4.453,4.805,4.922,5.039,5.156,5.156,5.156,3.984,3.984],[3.047,5.156,9.961,9.961,7.969,4.805,4.805,4.336,3.867,4.453,4.805,4.922,5.039,5.156,5.156,5.156,3.984,3.984],[7.031,9.961,9.961,9.961,7.969,5.508,5.273,4.688,4.219,4.57,4.922,5.039,5.156,5.156,5.156,5.156,5.156,5.156],[9.961,9.961,9.961,9.961,7.969,5.742,5.391,4.805,4.453,4.805,5.156,5.273,5.508,5.742,5.742,5.742,5.742,5.742],[9.961,9.961,10.078,10.195,7.969,6.562,5.625,5.156,5.156,5.508,5.977,6.211,6.445,6.562,6.562,6.562,6.562,6.562],[9.961,10.078,10.078,10.195,7.969,6.797,5.742,5.742,5.625,5.977,6.445,6.68,6.914,7.148,7.148,7.148,7.148,7.148],[9.961,10.078,10.078,10.078,7.969,6.797,5.859,6.211,6.562,6.914,7.266,7.383,7.734,7.852,7.852,7.852,7.852,7.852],[10.078,10.078,10.078,10.781,7.969,6.797,5.859,6.211,6.562,6.914,7.266,7.383,7.734,7.852,7.852,7.852,7.852,7.852]],"equal00":true,"equal01":true,"light_y":0.0,"mid_y":65.014,"peak_tr_y":98.03,"peak_ss_y":93.478,"tr_light":[1.172,1.172,1.172,0.234,0.352,0.234,1.172,1.172,1.172,2.695,3.633,4.219,4.219,4.219,4.688,5.156,5.156,5.156],"tr_mid":[8.789,8.672,9.727,9.844,-0.234,-0.82,-2.461,-2.812,-2.93,-4.102,-4.922,-5.859,-6.328,-6.328,-6.328,-0.469,5.742,5.742],"tr_peak":[10.078,10.078,10.078,10.078,0.117,2.109,2.461,2.227,3.164,3.75,3.633,3.516,3.867,4.219,5.039,5.859,7.852,7.852],"ss_light":[5.977,5.977,5.977,1.992,1.992,1.992,1.992,5.039,4.805,4.57,4.57,4.805,5.039,5.156,5.156,5.156,5.156,5.156],"ss_mid":[9.961,9.961,9.961,9.961,7.969,5.742,5.391,4.805,4.453,4.805,5.156,5.273,5.508,5.742,5.742,5.742,5.742,5.742],"ss_peak":[10.078,10.078,10.078,10.781,7.969,6.797,5.859,6.211,6.562,6.914,7.266,7.383,7.734,7.852,7.852,7.852,7.852,7.852],"deepest":{"y":61.481,"rpm":2700.0,"z":-6.328},"hole_y":[0.0,24.592,30.774,43.071,50.0,61.481,65.014,73.777,80.027],"hole":[[-4.805,-4.805,-4.805,-1.758,-1.64,-1.758,-0.82,-3.867,-3.633,-1.875,-0.937,-0.586,-0.82,-0.937,-0.468,0.0,0.0,0.0],[-3.985,-4.805,-6.68,-2.344,-3.164,-3.047,-2.461,-4.922,-4.453,-1.875,-0.937,-0.586,-0.82,-0.937,-0.351,0.0,0.0,0.0],[0.0,-0.234,-8.438,-10.313,-8.438,-6.445,-6.562,-6.914,-5.859,-5.742,-5.977,-6.211,-6.328,-6.445,-5.859,0.0,0.0,0.0],[0.0,-0.352,-5.625,-9.844,-7.852,-4.804,-5.859,-6.211,-5.039,-5.742,-6.094,-6.797,-7.383,-8.437,-8.086,-3.047,0.0,0.0],[-0.235,0.0,-0.82,-0.82,-6.797,-5.508,-6.563,-6.563,-6.211,-6.797,-7.149,-7.969,-9.492,-10.429,-10.195,-5.625,0.0,0.0],[-1.172,-1.289,-0.469,-0.117,-8.321,-6.68,-7.617,-7.266,-6.797,-7.734,-9.024,-10.43,-11.367,-11.484,-11.484,-6.094,0.0,0.0],[-1.172,-1.289,-0.234,-0.117,-8.203,-6.562,-7.852,-7.617,-7.383,-8.907,-10.078,-11.132,-11.836,-12.07,-12.07,-6.211,0.0,0.0],[-1.406,-0.82,0.0,0.0,-8.086,-7.734,-8.555,-8.437,-8.554,-10.43,-12.305,-12.539,-12.773,-12.539,-11.835,-4.804,0.0,0.0],[-0.82,0.0,0.0,0.0,-8.203,-8.086,-7.383,-7.617,-9.258,-11.133,-11.836,-12.305,-12.187,-11.953,-11.132,-4.336,0.0,0.0]]},"flfl":{"x":[200.0,400.0,600.0,700.0,775.0,800.0,1200.0,1600.0,2000.0,2300.0,2500.0,2700.0,3000.0,3200.0,3500.0],"y":[0.0,19.973,40.014,80.027,119.973,150.0,159.986,169.973,180.027,190.014,200.0,209.986,219.973,230.027,240.014],"z":[[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[24.9688,24.9688,24.9688,22.7188,21.0312,19.625,18.5938,18.8125,19.25,19.4062,19.6875,19.5,21.375,21.25,21.25],[40.0,40.0,39.2812,39.2812,39.2812,39.2812,37.1562,37.625,38.5,38.8125,39.375,39.0,42.75,42.5,42.5],[80.0,80.0,78.5312,78.5312,78.5312,78.5312,74.3438,75.25,77.0,77.625,78.7188,78.0312,85.4688,85.0312,85.0312],[120.0,120.0,117.8125,117.8125,117.8125,117.8125,111.5,112.875,115.5,116.4688,118.0938,117.0312,128.2188,127.5312,127.5312],[150.0,150.0,147.25,147.25,147.25,147.25,139.375,141.125,144.375,145.5625,147.5938,146.3125,160.2812,159.4062,159.4062],[160.0,160.0,167.0,167.0,167.0,167.0,167.0,167.0,167.0,167.0,167.0,167.0,167.0,167.0,167.0],[175.0,175.0,175.0,175.0,175.0,175.0,175.0,175.0,175.0,175.0,175.0,175.0,175.0,175.0,175.0],[183.0,183.0,183.0,183.0,183.0,183.0,183.0,183.0,183.0,183.0,183.0,183.0,183.0,183.0,183.0],[191.0,191.0,191.0,191.0,191.0,191.0,191.0,191.0,191.0,191.0,191.0,191.0,191.0,191.0,191.0],[199.0,199.0,199.0,199.0,199.0,199.0,199.0,199.0,199.0,199.0,199.0,199.0,199.0,199.0,199.0],[207.0,207.0,207.0,207.0,207.0,207.0,207.0,207.0,207.0,207.0,207.0,207.0,207.0,207.0,207.0],[215.0,215.0,215.0,215.0,215.0,215.0,215.0,215.0,215.0,215.0,215.0,215.0,215.0,215.0,215.0],[224.0,224.0,224.0,224.0,224.0,224.0,224.0,224.0,224.0,224.0,224.0,224.0,224.0,224.0,224.0],[234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0]],"equal":true,"peak":[234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0,234.0]},"afc":{"note":"truncated Z dump 512/588 bytes (256/294 cells)","dims":[14,21],"equal":false,"cells_present_a":256,"cells_present_b":256,"cells_declared":294,"x_a":[600.0,700.0,800.0,1000.0,1200.0,1280.0,1400.0,1580.0,1800.0,2000.0,2200.0,2400.0,2500.0,2600.0,2700.0,2800.0,3000.0,3250.0,3800.0,4000.0,4200.0],"x_b":[600.0,800.0,1000.0,1200.0,1280.0,1400.0,1580.0,1800.0,2000.0,2200.0,2400.0,2500.0,2600.0,2700.0,2800.0,3000.0,3250.0,3800.0,4000.0,4200.0,4500.0],"y_a":[0.0,1.002,2.004,3.006,4.995,10.005,15.0,19.994,25.005,29.999,34.994,40.004,43.997,48.005],"y_b":[0.0,1.002,2.004,3.006,4.995,10.005,15.0,19.994,34.994,40.004,43.997,48.005,100.003,110.008],"rpm_a_only":[700.0],"rpm_b_only":[4500.0],"boost_a_only":[25.005,29.999],"boost_b_only":[100.003,110.008],"rpm_shared":[600.0,800.0,1000.0,1200.0,1280.0,1400.0,1580.0,1800.0,2000.0,2200.0,2400.0,2500.0,2600.0,2700.0,2800.0,3000.0,3250.0,3800.0,4000.0,4200.0],"boost_shared":[0.0,1.002,2.004,3.006,4.995,10.005,15.0,19.994,34.994,40.004,43.997,48.005],"slice0":{"y":0.0,"a":[119.973,130.027,73.573,73.573,73.573,73.573,73.573,73.573,73.573,73.573,73.573,73.573,73.573,73.573,73.573,73.573,72.147,72.147,72.147,72.147],"b":[100.0,66.372,63.451,63.519,44.973,44.973,44.973,44.973,44.973,44.973,44.973,44.973,44.973,44.973,44.973,44.973,44.973,44.973,44.973,44.973],"delta":[19.973,63.655,10.122,10.054,28.6,28.6,28.6,28.6,28.6,28.6,28.6,28.6,28.6,28.6,28.6,28.6,27.174,27.174,27.174,27.174]},"slice20":{"y":19.994,"a":[119.973,140.897,164.334,164.334,164.334,164.334,164.334,164.334,164.334,164.334,164.334,164.334,164.334,164.334,164.334,164.334,170.109,170.109,170.109,170.109],"b":[100.0,100.747,97.215,99.321,108.56,106.318,97.011,88.383,86.277,87.228,88.791,88.859,86.141,86.141,78.465,75.543,72.962,75.0,75.0,75.0],"delta":[19.973,40.15,67.119,65.013,55.774,58.016,67.323,75.951,78.057,77.106,75.543,75.475,78.193,78.193,85.869,88.791,97.147,95.109,95.109,95.109]}}};
+const PLOT = {
+  paper_bgcolor: "rgba(0,0,0,0)",
+  plot_bgcolor: "#121622",
+  font: { color: "#c5c9d1", size: 12, family: "Segoe UI, system-ui, sans-serif" },
+  margin: { t: 36, r: 24, b: 48, l: 56 },
+  legend: { orientation: "h", y: 1.12, font: { size: 11 } },
+  xaxis: { gridcolor: "#2c3344", zerolinecolor: "#2c3344", automargin: true },
+  yaxis: { gridcolor: "#2c3344", zerolinecolor: "#2c3344", automargin: true },
+};
+const COL = { a: "#5eb0ef", b: "#e8a04a", tr: "#9b8cff", ss: "#3ecf8e", hole: "#ff8a80" };
+
+function ready() {
+  const F = DATA.fuel, T = DATA.timing, L = DATA.flfl, A = DATA.afc;
+  const rpm = F.x;
+  Plotly.newPlot("chart-wot", [
+    { x: rpm, y: F.wot00_a, name: "A 5DFL00 100%", mode: "lines+markers", line: { color: COL.a, width: 3 }, marker: { size: 6 } },
+    { x: rpm, y: F.wot00_b, name: "B 5DFL00 100%", mode: "lines+markers", line: { color: COL.b, width: 3, dash: "dash" }, marker: { size: 6 } },
+    { x: rpm, y: F.wot01_a, name: "A 5DFL01 100%", mode: "lines+markers", line: { color: COL.a, width: 1.5 }, marker: { size: 4 }, opacity: 0.75 },
+    { x: rpm, y: F.wot01_b, name: "B 5DFL01 100%", mode: "lines+markers", line: { color: COL.b, width: 1.5, dash: "dot" }, marker: { size: 4 }, opacity: 0.75 },
+  ], Object.assign({}, PLOT, {
+    title: { text: "WOT (100% throttle) fuel vs RPM", font: { size: 14, color: "#fff" } },
+    xaxis: Object.assign({}, PLOT.xaxis, { title: "RPM" }),
+    yaxis: Object.assign({}, PLOT.yaxis, { title: "mm³/s" }),
+    annotations: [{
+      x: 3000, y: F.gap.dfl01_3000.a, text: "3000 · SS Δ " + F.gap.dfl01_3000.delta,
+      showarrow: true, arrowcolor: "#ffd48a", font: { color: "#ffd48a", size: 11 }, ax: 40, ay: -30
+    }],
+  }), {responsive: true, displaylogo: false});
+
+  Plotly.newPlot("chart-delta", [{
+    z: F.delta00, x: rpm, y: F.y.map(function(v){ return String(v) + "%"; }),
+    type: "heatmap", colorscale: [[0,"#1b2838"],[0.35,"#3d4a22"],[0.7,"#b8862b"],[1,"#ffe08a"]],
+    colorbar: { title: "A−B", thickness: 12 }, hoverongaps: false,
+  }], Object.assign({}, PLOT, {
+    title: { text: "5DFL00 A − B (mm³/s)", font: { size: 14, color: "#fff" } },
+    xaxis: Object.assign({}, PLOT.xaxis, { title: "RPM" }),
+    yaxis: Object.assign({}, PLOT.yaxis, { title: "throttle %", type: "category" }),
+    margin: { t: 36, r: 48, b: 48, l: 64 },
+  }), {responsive: true, displaylogo: false});
+
+  Plotly.newPlot("chart-bars", [
+    { x: rpm, y: F.wot00_delta, name: "5DFL00 Δ", type: "bar", marker: { color: COL.a } },
+    { x: rpm, y: F.wot01_delta, name: "5DFL01 Δ", type: "bar", marker: { color: COL.b } },
+  ], Object.assign({}, PLOT, {
+    barmode: "group",
+    title: { text: "100% row A − B vs RPM", font: { size: 14, color: "#fff" } },
+    xaxis: Object.assign({}, PLOT.xaxis, { title: "RPM" }),
+    yaxis: Object.assign({}, PLOT.yaxis, { title: "mm³/s" }),
+  }), {responsive: true, displaylogo: false});
+
+  Plotly.newPlot("chart-timing", [
+    { x: T.x, y: T.tr_light, name: "00 transient · Y=" + T.light_y + " (light)", mode: "lines+markers", line: { color: COL.a, width: 2, dash: "dot" } },
+    { x: T.x, y: T.ss_light, name: "01 steady · Y=" + T.light_y + " (light)", mode: "lines+markers", line: { color: COL.ss, width: 2, dash: "dot" } },
+    { x: T.x, y: T.tr_mid, name: "00 transient · Y=" + T.mid_y + " (mid)", mode: "lines+markers", line: { color: COL.hole, width: 3 } },
+    { x: T.x, y: T.ss_mid, name: "01 steady · Y=" + T.mid_y + " (mid)", mode: "lines+markers", line: { color: COL.ss, width: 3 } },
+    { x: T.x, y: T.tr_peak, name: "00 transient · Y=" + T.peak_tr_y + " (peak)", mode: "lines+markers", line: { color: COL.a, width: 2 } },
+    { x: T.x, y: T.ss_peak, name: "01 steady · Y=" + T.peak_ss_y + " (peak)", mode: "lines+markers", line: { color: COL.b, width: 2 } },
+  ], Object.assign({}, PLOT, {
+    title: { text: "Injection timing (deg) vs RPM — A = B", font: { size: 14, color: "#fff" } },
+    xaxis: Object.assign({}, PLOT.xaxis, { title: "RPM" }),
+    yaxis: Object.assign({}, PLOT.yaxis, { title: "deg", zeroline: true, zerolinecolor: "#ff8a80" }),
+    shapes: [{ type: "line", x0: T.x[0], x1: T.x[T.x.length-1], y0: 0, y1: 0, line: { color: "#445", width: 1 } }],
+  }), {responsive: true, displaylogo: false});
+
+  Plotly.newPlot("chart-hole", [{
+    z: T.hole, x: T.x, y: T.hole_y.map(String),
+    type: "heatmap", colorscale: "RdBu", zmid: 0,
+    colorbar: { title: "00−01", thickness: 12 },
+  }], Object.assign({}, PLOT, {
+    title: { text: "Transient − steady (deg), shared Y", font: { size: 14, color: "#fff" } },
+    xaxis: Object.assign({}, PLOT.xaxis, { title: "RPM" }),
+    yaxis: Object.assign({}, PLOT.yaxis, { title: "fuel Y mm³/s", type: "category" }),
+    margin: { t: 36, r: 48, b: 48, l: 72 },
+  }), {responsive: true, displaylogo: false});
+
+  Plotly.newPlot("chart-flfl", [{
+    z: L.z, x: L.x, y: L.y.map(String),
+    type: "heatmap", colorscale: "Viridis",
+    colorbar: { title: "mg/str", thickness: 12 },
+  }], Object.assign({}, PLOT, {
+    title: { text: "FLFLTBZA mg/stroke (A = B)", font: { size: 14, color: "#fff" } },
+    xaxis: Object.assign({}, PLOT.xaxis, { title: "RPM" }),
+    yaxis: Object.assign({}, PLOT.yaxis, { title: "Y mm³/s", type: "category" }),
+    margin: { t: 36, r: 48, b: 48, l: 72 },
+  }), {responsive: true, displaylogo: false});
+
+  Plotly.newPlot("chart-flfl-peak", [
+    { x: L.x, y: L.peak, name: "max across Y", mode: "lines+markers", line: { color: COL.a, width: 3 } },
+    { x: L.x, y: L.z[5], name: "Y=" + L.y[5], mode: "lines+markers", line: { color: COL.b, width: 2 } },
+  ], Object.assign({}, PLOT, {
+    title: { text: "Conversion vs RPM (peak row + Y≈150)", font: { size: 14, color: "#fff" } },
+    xaxis: Object.assign({}, PLOT.xaxis, { title: "RPM" }),
+    yaxis: Object.assign({}, PLOT.yaxis, { title: "mg/stroke" }),
+  }), {responsive: true, displaylogo: false});
+
+  Plotly.newPlot("chart-afc", [
+    { x: A.rpm_shared, y: A.slice0.a, name: "A @ 0 inHg", mode: "lines+markers", line: { color: COL.a, width: 3 } },
+    { x: A.rpm_shared, y: A.slice0.b, name: "B @ 0 inHg", mode: "lines+markers", line: { color: COL.b, width: 3, dash: "dash" } },
+    { x: A.rpm_shared, y: A.slice20.a, name: "A @ ~20 inHg", mode: "lines+markers", line: { color: COL.a, width: 2 }, opacity: 0.8 },
+    { x: A.rpm_shared, y: A.slice20.b, name: "B @ ~20 inHg", mode: "lines+markers", line: { color: COL.b, width: 2, dash: "dot" }, opacity: 0.8 },
+  ], Object.assign({}, PLOT, {
+    title: { text: "AFC limit vs RPM — aligned by shared RPM, not column index", font: { size: 14, color: "#fff" } },
+    xaxis: Object.assign({}, PLOT.xaxis, { title: "RPM" }),
+    yaxis: Object.assign({}, PLOT.yaxis, { title: "mm³/s limit" }),
+  }), {responsive: true, displaylogo: false});
+}
+
+function bindNav() {
+  const links = [...document.querySelectorAll(".nav a[href^='#']")];
+  const slides = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + en.target.id));
+    });
+  }, { rootMargin: "-40% 0px -50% 0px" });
+  slides.forEach(s => io.observe(s));
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp" && e.key !== "PageDown" && e.key !== "PageUp") return;
+    const ids = slides.map(s => s.id);
+    const on = document.querySelector(".nav a.on");
+    let i = on ? ids.indexOf(on.getAttribute("href").slice(1)) : 0;
+    if (e.key === "ArrowDown" || e.key === "PageDown") i = Math.min(ids.length - 1, i + 1);
+    else i = Math.max(0, i - 1);
+    e.preventDefault();
+    slides[i].scrollIntoView({ behavior: "smooth" });
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", function(){ ready(); bindNav(); });
+} else { ready(); bindNav(); }
+</script>
+</body>
+</html>

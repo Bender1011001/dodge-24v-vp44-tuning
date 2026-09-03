@@ -20,6 +20,7 @@
 | [docs/smarty-s03-maps.md](smarty-s03-maps.md) | 1998 UDC stock FLFL / 4DTA / 5DFL vs factory A/B; SW0–9 blocker |
 | [docs/safety.md](safety.md) | Read-only rules |
 | [maps/index.md](../maps/index.md) | Map-file index |
+| [maps/factory-a-vs-b.html](../maps/factory-a-vs-b.html) | Visual A vs B presentation + [PDF](../maps/factory-a-vs-b.pdf) |
 | [maps/tune_A_vs_B.html](../maps/tune_A_vs_B.html) | Decoded compare (browser) |
 | [maps/tune_A_vs_B.json](../maps/tune_A_vs_B.json) | Decoded compare (machine) |
 | [maps/tune_preview.md](../maps/tune_preview.md) | Featured tables in markdown |
