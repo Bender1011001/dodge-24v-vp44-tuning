@@ -8,6 +8,7 @@ This repository is the owner-captured **factory calibration** from two physical 
 
 | Need | Page |
 |---|---|
+| NotebookLM / audio overview source | **[docs/notebooklm-briefing.md](docs/notebooklm-briefing.md)** |
 | Fuel (5DFL A vs B, conversion, AFC) | **[docs/factory-fuel.md](docs/factory-fuel.md)** |
 | Timing (4DTA00 vs 4DTA01) | **[docs/factory-timing.md](docs/factory-timing.md)** |
 | Factory A vs B (visual) | **[maps/factory-a-vs-b.html](maps/factory-a-vs-b.html)** |
@@ -57,12 +58,13 @@ This master repo **links** the published pieces. It does not duplicate their bin
 
 ## Other documentation
 
-1. [docs/truck.md](docs/truck.md) — vehicle, ECM, VP44, 3-pin datalink vs J1708.
-2. [docs/cm551.md](docs/cm551.md) — the two boxes, identity fields, KennPar dump vs flash image.
-3. [docs/maps.md](docs/maps.md) — table storage, every decoded Z-map.
-4. [docs/protocol.md](docs/protocol.md) — ReadByNTN `0x48` / `0x49`, CAN, INLINE 6 quirks.
-5. [docs/quadzilla.md](docs/quadzilla.md) — Adrenaline RE facts (verified vs unknown).
-6. [docs/inventory.md](docs/inventory.md) — what lives here vs the companions.
+1. [docs/notebooklm-briefing.md](docs/notebooklm-briefing.md) — NotebookLM / audio overview source (spoken story of factory A vs B).
+2. [docs/truck.md](docs/truck.md) — vehicle, ECM, VP44, 3-pin datalink vs J1708.
+3. [docs/cm551.md](docs/cm551.md) — the two boxes, identity fields, KennPar dump vs flash image.
+4. [docs/maps.md](docs/maps.md) — table storage, every decoded Z-map.
+5. [docs/protocol.md](docs/protocol.md) — ReadByNTN `0x48` / `0x49`, CAN, INLINE 6 quirks.
+6. [docs/quadzilla.md](docs/quadzilla.md) — Adrenaline RE facts (verified vs unknown).
+7. [docs/inventory.md](docs/inventory.md) — what lives here vs the companions.
 
 ## License
 
