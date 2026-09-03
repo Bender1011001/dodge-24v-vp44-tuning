@@ -1,0 +1,28 @@
+{
+  "ecm": "CM551",
+  "label": "A",
+  "ecm_code": "J90269.06",
+  "ecm_pn": "03942336",
+  "rom_date": "091197",
+  "cal_date": "062800",
+  "datadate": "062800",
+  "dataplate": {
+    "engine": "Cummins 6BTA 5.9",
+    "raw": "JCMMNS6BTA5.9 Li",
+    "fuel_pump": "FP98455",
+    "application": "Chrysler T-300"
+  },
+  "engine_hours": "13130:48:02",
+  "key_on": "~13724",
+  "ecm_vss_miles": 81,
+  "ssph": "05 07 10 11 05 00 02 00",
+  "ssblph": "02 01 02 08",
+  "flcrc": "00 00",
+  "hardware_id_itn0000": "45 31",
+  "itns_ok": 667,
+  "itns_miss": 0,
+  "catalog": "Chr0000 KennPar (ReadByNTN)",
+  "protocol": "CAN 250k 29-bit PGN EF00 cmd 0x48",
+  "source": "read-only capture from hardware we own",
+  "note": "Packed ITN dump, not a flash/ROM image. VIN redacted. Password and boot-copy ITNs omitted."
+}

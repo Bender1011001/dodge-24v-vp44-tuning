@@ -1,0 +1,28 @@
+{
+  "ecm": "CM551",
+  "label": "B",
+  "ecm_code": "J90268.04",
+  "ecm_pn": "03942336",
+  "rom_date": "091197",
+  "cal_date": "102198",
+  "datadate": "102198",
+  "dataplate": {
+    "engine": "ISB 235",
+    "raw": "JCMMNSISB 235",
+    "fuel_pump": "98453",
+    "application": "Chrysler automotive"
+  },
+  "engine_hours": "10196:32:59",
+  "key_on": "~10240",
+  "ecm_vss_miles": 287919,
+  "ssph": "05 07 10 08 05 00 02 00",
+  "ssblph": "02 01 02 08",
+  "flcrc": "00 00",
+  "hardware_id_itn0000": "45 31",
+  "itns_ok": 667,
+  "itns_miss": 0,
+  "catalog": "Chr0000 KennPar (ReadByNTN)",
+  "protocol": "CAN 250k 29-bit PGN EF00 cmd 0x48",
+  "source": "read-only capture from hardware we own",
+  "note": "Packed ITN dump, not a flash/ROM image. VIN redacted. Password and boot-copy ITNs omitted."
+}
