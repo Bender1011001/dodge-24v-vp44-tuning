@@ -166,7 +166,7 @@
   "1000": {
     "name": "SECRET;SEC_KEY",
     "len": 2,
-    "hex": "00 FF"
+    "redacted": true
   },
   "1001": {
     "name": "JCNMLEAR",
