@@ -16,7 +16,7 @@
 | [docs/maps.md](maps.md) | Table format, all 29 Z-maps |
 | [docs/protocol.md](protocol.md) | ReadByNTN `0x48`/`0x49`, INLINE quirks |
 | [docs/quadzilla.md](quadzilla.md) | Adrenaline RE summary + pointer |
-| [docs/smarty.md](smarty.md) | UDC/KennPar overlap, KPA frozen, pointer to decoded S03 maps |
+| [docs/smarty.md](smarty.md) | UDC/KennPar overlap, how the stock tables were obtained, pointer to decoded S03 maps |
 | [docs/smarty-s03-maps.md](smarty-s03-maps.md) | 1998 UDC stock FLFL / 4DTA / 5DFL vs factory A/B; SW0–9 blocker |
 | [docs/safety.md](safety.md) | Read-only rules |
 | [maps/index.md](../maps/index.md) | Map-file index |

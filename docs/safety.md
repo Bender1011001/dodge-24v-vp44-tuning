@@ -19,7 +19,7 @@ This repository is **read-only documentation** plus **read-only KennPar captures
 - Use this tool stack as a **running-engine fueling interface**.
 - Copy Calterm metafiles, INSITE DLLs, UDC Pro databases, or Smarty firmware into a public tree. This repo does not.
 
-I6Pull’s blocked ITN list: `0005`, `0016`, `001E`–`0022`, `1083`, `11AF`, `1267`.
+I6Pull’s blocked ITN list: `0005`, `0016`, `001E`–`0022`, `1000`, `1083`, `11AF`, `1267`. It is enforced in code, along with a transmit allowlist that never sends an 11-bit frame; see the [cm551-i6pull safety notes](https://github.com/Bender1011001/cm551-i6pull/blob/master/SAFETY.md).
 
 ## What the files are not
 

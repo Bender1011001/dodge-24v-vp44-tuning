@@ -4,7 +4,7 @@
 
 Tuner-facing overlay vs factory `5DFL` / `4DTA` / AFC: **[quadzilla-vs-factory.md](quadzilla-vs-factory.md)**. This page is the RE fact list (verified vs unknown).
 
-Quadzilla **Adrenaline** (DADR9802 class) is an inline diesel tuner sold for **1998–2002 Dodge Ram 24-valve Cummins / VP44**. It sits in the ECM↔pump path and exposes tuner parameters (AIDs) over USB CDC and BLE (iQuad / x2com). It is a **separate computer** from the CM551. CM551 KennPar dumps in this master repo are not Adrenaline firmware, and Adrenaline AIDs are not KennPar ITNs.
+Quadzilla **Adrenaline** (DADR9802 class) is an inline diesel tuner sold for **1998–2002 Dodge Ram 24-valve Cummins / VP44**. It sits in the ECM↔pump path and exposes tuner parameters (AIDs) over USB CDC and Bluetooth Classic RFCOMM (iQuad / x2com; the app uses no BLE/GATT APIs). It is a **separate computer** from the CM551. CM551 KennPar dumps in this master repo are not Adrenaline firmware, and Adrenaline AIDs are not KennPar ITNs.
 
 Detailed artifacts live in [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed). This page is a factual summary for the same truck family. It does **not** copy firmware images, the PC updater, the APK, or Ghidra projects.
 
@@ -16,7 +16,6 @@ Re-audit date on the lab map: **2026-08-22**.
 
 - **`.qz` packaging:** ciphertext-feedback XOR over **uncompressed** Intel HEX (`:10400000…`, 2000 `:10` records, CRLF, no EOF). Not zlib/deflate. Not the Smarty `.Smt` XOR.
 - **Image:** ARM7TDMI, **32,000 bytes**, file offset 0 maps to abs `0x4000` (`0x4000`–`0xBCFF`). Round-trip decrypt stock `.qz` → bin → encrypt → decrypt matches `firmware_v2.8.4HF.bin` (sha256 prefix `1ae519ba6194e8f7…` in the lab notes).
-- **Toolkit name that exists in the lab tree:** `quadzilla_toolkit.py`. `firmware_crypto.py` / `quadzilla_tool.py` are **not** current names in that tree.
 - **AID Table 1** (`sub_7C1C`) starts at `0xA91C` with firmware segment cuts. AID **113–136** are SRAM `0x200B3B`–`0x200B69` (2-byte stride), matching Dodge 1998–2002 JSON **boost-curve** names.
 - **AID Table 2** (`sub_7C68`) starts at `0xAD18` (not `0xAE80`); stop before code at `0xB114`. Table 2 words are **RAM pointers**, not 1–4 size integers. Width comes from `sub_7BF8` / `x2com_get_data_size`.
 - **AID size brackets** (CRC and x2com): `<75` → 1 byte, `<150` → 2, `<185` → 3, `<220` → 4. CRC-8 init `0xFF`, poly `0x1D`, final bitwise NOT.
@@ -41,15 +40,20 @@ Closed structural chain:
 
 USB VID/PID commonly cited for the CDC device: `0x1A18` / `0x0002`, 921600 baud. **No Quadzilla USB device was on the bench in the 2026-08-22 pass.** Do not invent matrix cells.
 
-## What the published GitHub README still gets wrong
+## Corrections already made upstream
 
-[quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed) is the public pointer. Its root README still carries older slogans (57/60 functions, 117 AIDs as if one profile, “complete RE”). Those numbers are **not** current truth.
+The research repo [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed) was rewritten to match this audit; its [security assessment](https://github.com/Bender1011001/quadzilla-adrenaline-reversed/blob/master/docs/SECURITY_ASSESSMENT.md) lists every corrected claim. The ones that matter here:
 
-Do **not** use `QUADZILLA_RE_COMPLETE.md` as current truth. Lab corrections include: 122 functions listed in `firmware_analysis_results.json` (not 57/60); `FirmwareUpdate.pwk` is 4 bytes `111d6f20`, not the full key; free flash is **2,888 bytes** at `0xB1B8`–`0xBCFF`, not 19 KB; no `DADR9802` / `Aug 2 2018` strings in this image; `FUN_00427401` is a PC-side decompressor, not MCU fueling; the 72-byte TPS island at `0xB1B8` has **no** stock xref (unused, not a live patch).
+- The function count is an audit result: IDA and Ghidra reconcile to **145 execution entries** (not 57/60), 14 with evidence-backed roles.
+- The working key is **8 bytes** (`111d6f202ee5a103`), derived from the 8-byte `.pwd`. The 4-byte `FirmwareUpdate.pwk` (`111d6f20`) in the lab tree is a truncated extraction, not the real file.
+- Free flash is **2,888 bytes** at `0xB1B8`–`0xBCFF`, not 19 KB; no `DADR9802` / `Aug 2 2018` strings exist in this image.
+- `FUN_00427401` is a PC-side decompressor, not MCU fueling.
+- The 72-byte TPS island at `0xB1B8` has **no** stock xref (unused, not a live patch).
+- The phone link is Bluetooth Classic RFCOMM, not BLE.
 
 ## Hardware-blocked / still unknown
 
-These are open because there was no tuner on USB/BLE in that pass, not because the files were unread:
+These are open because there was no tuner on USB or Bluetooth in that pass, not because the files were unread:
 
 - Live AID read/write against a physical Adrenaline
 - Converting TC0_RC (`applied*24+3`) to microseconds with a measured timer clock

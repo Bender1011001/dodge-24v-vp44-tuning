@@ -8,7 +8,6 @@ This repository is the owner-captured **factory calibration** from two physical 
 
 | Need | Page |
 |---|---|
-| NotebookLM / audio overview source | **[docs/notebooklm-briefing.md](docs/notebooklm-briefing.md)** |
 | Fuel (5DFL A vs B, conversion, AFC) | **[docs/factory-fuel.md](docs/factory-fuel.md)** |
 | Timing (4DTA00 vs 4DTA01) | **[docs/factory-timing.md](docs/factory-timing.md)** |
 | Factory A vs B (visual) | **[maps/factory-a-vs-b.html](maps/factory-a-vs-b.html)** |
@@ -58,8 +57,7 @@ This master repo **links** the published pieces. It does not duplicate their bin
 
 ## Other documentation
 
-1. [docs/notebooklm-briefing.md](docs/notebooklm-briefing.md) — NotebookLM / audio overview source (spoken story of factory A vs B).
-2. [docs/truck.md](docs/truck.md) — vehicle, ECM, VP44, 3-pin datalink vs J1708.
+1. [docs/truck.md](docs/truck.md) — vehicle, ECM, VP44, 3-pin datalink vs J1708.
 3. [docs/cm551.md](docs/cm551.md) — the two boxes, identity fields, KennPar dump vs flash image.
 4. [docs/maps.md](docs/maps.md) — table storage, every decoded Z-map.
 5. [docs/protocol.md](docs/protocol.md) — ReadByNTN `0x48` / `0x49`, CAN, INLINE 6 quirks.
@@ -68,4 +66,4 @@ This master repo **links** the published pieces. It does not duplicate their bin
 
 ## License
 
-Documentation and the redacted dumps here are [CC BY 4.0](LICENSE). The INLINE 6 tool is MIT in its own repo. Quadzilla research keeps the license of [quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed).
+Documentation and the redacted dumps here are [CC BY 4.0](LICENSE). The INLINE 6 tool ([cm551-i6pull](https://github.com/Bender1011001/cm551-i6pull)) is MIT, and the Quadzilla research ([quadzilla-adrenaline-reversed](https://github.com/Bender1011001/quadzilla-adrenaline-reversed)) is MIT for original work, each under its own license. The dumps in `maps/` are copies of the redacted files in [cm551-dodge-dumps](https://github.com/Bender1011001/cm551-dodge-dumps).

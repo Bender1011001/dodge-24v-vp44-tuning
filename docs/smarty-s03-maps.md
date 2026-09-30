@@ -70,11 +70,10 @@ Thirty year/transmission calibrations. Stem pattern `YYYYoPU{Aut|Man}xxJ`. The t
 
 ## Method
 
-- **Plaintext source:** `db/*.dat.plain` from the already-recovered UDC native decoder (`LIB_0203` `PCGet` / `tools/udc_db_decrypt.py`). XOR-key guessing stays **frozen**; this pass does not brute keys.
+- **Plaintext source:** the vendor's own UDC native decoder (`LIB_0203`, `PCGet`) applied to the vendor's stock year files. No key guessing or brute force is used, and the vendor files are not published here.
 - **Layout:** decrypted cal image, **u16 big-endian**, same as live KennPar. Axes start with a 2-byte BE length (byte count of the point list). 1998 IQ RPM-axis score: **1.929**.
 - **Scales/add (Chr0000 meta, same as live ECM decode):** IQ `× 0.03125`; RPM `× 0.125`; 5DFL `× 0.0679348 − 800` MM3/s; 4DTA `× 0.1171875 − 60` deg.
 - **Factory grids:** `maps/tune_A_vs_B.json` (ReadByNTN, not a flash image).
-- **Not used:** `analyze_s03_udcgrid.py` rot-254-of-header (false path once `.plain` exists).
 
 ## What actually changes (1998 UDC stock vs factory)
 

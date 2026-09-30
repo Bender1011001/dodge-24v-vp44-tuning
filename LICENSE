@@ -394,16 +394,3 @@ public licenses.
 
 Creative Commons may be contacted at creativecommons.org.
 
-=======================================================================
-
-Companion repositories (not licensed by this file)
-
-- cm551-i6pull (the INLINE 6 read-only puller) is MIT:
-  https://github.com/Bender1011001/cm551-i6pull
-- quadzilla-adrenaline-reversed has its own license in that repository:
-  https://github.com/Bender1011001/quadzilla-adrenaline-reversed
-- cm551-dodge-dumps is also CC BY 4.0; the packed dumps in maps/ are
-  copies of the redacted files from that repository:
-  https://github.com/Bender1011001/cm551-dodge-dumps
-
-
