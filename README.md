@@ -1,8 +1,14 @@
-# Dodge 24-valve 5.9 VP44 — factory maps
+# Dodge 24-valve 5.9 VP44 — calibration comparison notes
+
+## Read this before interpreting the comparisons
+
+This is an earlier research snapshot with its original development history. Later provenance checks identified the A comparison as Smarty-associated; the two dumps below must not both be treated as authenticated factory baselines. Engineering-unit labels originate from recovered catalog definitions and remain qualified by firmware applicability.
+
+The [CM551 Calibration Lab](https://github.com/Bender1011001/cm551-calibration-lab) contains the updated [exact factory-image map anchors and control path](https://github.com/Bender1011001/cm551-calibration-lab/blob/main/docs/ARCHITECTURE.md#factory-control-path), validation boundaries and remaining custom-programming work. Existing files here are retained as historical comparison evidence, not relabeled or rewritten into a new history.
 
 A Dodge Ram with a 24-valve **5.9 Cummins** (ISB), Bosch **VP44** injection pump, and Cummins **CM551** engine controller. Common model years **1998.5–2002**.
 
-This repository is the owner-captured **factory calibration** from two physical CM551 modules, decoded to engineering units. It is for reading what the boxes already contain. It is not a flash kit, not a programmer, and not a substitute for Cummins or Chrysler service tools.
+This repository compares owner-captured parameter data from two physical CM551 modules using catalog-derived conversions. It is for inspecting the captured contents. It is not a flash kit or programmer.
 
 ## Open first
 
@@ -17,7 +23,7 @@ This repository is the owner-captured **factory calibration** from two physical 
 
 Index of map files: [maps/index.md](maps/index.md). How tables are stored, and the other 24 maps: [docs/maps.md](docs/maps.md).
 
-## Two factory calibrations
+## Two captured calibrations
 
 Same ECM part number and ROM date. Different silk-screen codes. **Timing tables match. Fuel tables do not.**
 
